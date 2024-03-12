@@ -1,25 +1,37 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  Timestamp,
+} from 'typeorm';
 @Entity({ name: 'users' })
-export class UserEntity {
+export class UsersEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    unique: true,
+    nullable: false,
+  })
   user: string;
 
   @Column()
   password: string;
 
+  @Column({ default: true })
+  isActive: boolean;
+
   @Column({
     name: 'updated_at',
     type: 'timestamp',
+    default: () => 'current_timestamp',
   })
-  updatedAt?: Date;
+  updatedAt?: Timestamp;
 
-  @Column({
-    name: 'createdAt',
+  @CreateDateColumn({
+    name: 'created_at',
     type: 'timestamp',
   })
-  createdAt?: Date;
+  createdAt?: Timestamp;
 }
