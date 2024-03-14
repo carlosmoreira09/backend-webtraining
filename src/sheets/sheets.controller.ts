@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpException,
@@ -49,10 +50,12 @@ export class SheetsController {
   }
 
   @Post()
-  async createSheet(newSheet: CreateSheetDTO) {
+  async createSheet(@Body() newSheet: CreateSheetDTO) {
     try {
-      return await this.sheetsService.create(newSheet);
+      await this.sheetsService.create(newSheet);
+      return 'Exercicio Inserido';
     } catch (error) {
+      console.log(error);
       throw new HttpException(
         {
           statusCode: HttpStatus.BAD_REQUEST,

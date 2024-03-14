@@ -9,4 +9,6 @@ export class ExerciseDTO {
   exercise_type: string;
   @IsString()
   training_type: string;
+  @IsString()
+  repetition: string;
 }

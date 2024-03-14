@@ -3,13 +3,13 @@ import { SheetsEntity } from '../../sheets/sheets.entity';
 
 export class ClientDTO {
   @IsString()
-  fullName: string;
+  fullName?: string;
   @IsInt()
-  age: number;
+  age?: number;
   @IsEmail()
-  email: string;
+  email?: string;
   @IsString()
-  phone: string;
+  phone?: string;
   @IsInt()
-  id_sheet: SheetsEntity;
+  id_sheet?: SheetsEntity[];
 }

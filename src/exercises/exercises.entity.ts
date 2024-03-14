@@ -1,5 +1,5 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { SheetsEntity } from '../sheets/sheets.entity';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { UsersEntity } from '../users/users.entity';
 
 @Entity({ name: 'exercises' })
 export class ExercisesEntity {
@@ -10,6 +10,9 @@ export class ExercisesEntity {
   exercise: string;
 
   @Column()
+  repetition: string;
+
+  @Column()
   exercise_desc: string;
 
   @Column()
@@ -18,6 +21,6 @@ export class ExercisesEntity {
   @Column()
   training_type: string;
 
-  @OneToMany(() => SheetsEntity, (sheets) => sheets.id_sheet)
-  sheets: SheetsEntity[];
+  @OneToOne(() => UsersEntity, (user) => user.listExercises)
+  user: UsersEntity;
 }

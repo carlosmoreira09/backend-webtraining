@@ -1,10 +1,10 @@
 import {
+  Column,
   Entity,
-  OneToMany,
+  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ExercisesEntity } from '../exercises/exercises.entity';
 import { ClientsEntity } from '../clients/clients.entity';
 
 @Entity({ name: 'training_sheets' })
@@ -12,9 +12,10 @@ export class SheetsEntity {
   @PrimaryGeneratedColumn()
   id_sheet: number;
 
-  @OneToMany(() => ExercisesEntity, (exercises) => exercises.exercise)
-  exercises: ExercisesEntity[];
+  @Column()
+  id_exercise: string;
 
   @OneToOne(() => ClientsEntity)
+  @JoinColumn()
   id_client: ClientsEntity;
 }

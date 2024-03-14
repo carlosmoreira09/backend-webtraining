@@ -1,13 +1,16 @@
 import {
   Column,
   CreateDateColumn,
-  Entity, JoinColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   Timestamp,
 } from 'typeorm';
 import { SheetsEntity } from '../sheets/sheets.entity';
+import { ExercisesEntity } from '../exercises/exercises.entity';
 
 @Entity({ name: 'clients' })
 export class ClientsEntity {
@@ -32,15 +35,14 @@ export class ClientsEntity {
   @Column()
   phone: string;
 
-  @OneToOne(() => SheetsEntity)
-  @JoinColumn({ name: 'id_sheet', referencedColumnName: 'id_sheet' })
-  id_sheet: SheetsEntity;
-
   @Column({ default: 0 })
   id_training: string;
 
   @Column({ default: true })
   isActive: boolean;
+
+  @Column()
+  ids_sheets: number;
 
   @Column({
     name: 'updated_at',

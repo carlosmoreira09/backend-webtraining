@@ -39,4 +39,10 @@ export class ExercisesService {
       },
     });
   }
+
+  async getExercise(id: number) {
+    return await this.exerciseRepository.findOneBy({
+      id_exercise: id,
+    });
+  }
 }
