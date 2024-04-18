@@ -2,15 +2,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   Timestamp,
 } from 'typeorm';
-import { SheetsEntity } from '../sheets/sheets.entity';
-import { ExercisesEntity } from '../exercises/exercises.entity';
 
 @Entity({ name: 'clients' })
 export class ClientsEntity {

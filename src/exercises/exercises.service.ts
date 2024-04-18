@@ -33,6 +33,8 @@ export class ExercisesService {
       select: {
         id_exercise: true,
         exercise: true,
+        exercise_type: true,
+        exercise_desc: true,
       },
       where: {
         exercise_type: type,
