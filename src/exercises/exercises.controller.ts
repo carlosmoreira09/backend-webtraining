@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,
+  Controller, Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
 import { ExerciseDTO } from './exerciseDTO/exercise.dto';
+import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 
 @Controller('exercises')
 export class ExercisesController {
@@ -20,7 +21,8 @@ export class ExercisesController {
   @Get(':type')
   async listExerciseByType(@Param('type') type: string) {
     try {
-      return this.exerciseService.listExerciseByType(type);
+      return await this.exerciseService.listExerciseByType(type);
+
     } catch (error) {
       throw new HttpException(
         {
@@ -39,7 +41,10 @@ export class ExercisesController {
   async saveExercise(@Body() newExercise: ExerciseDTO) {
     try {
       await this.exerciseService.create(newExercise);
-      return 'Exercicio Adicionado';
+      const returnMessage: GeneralReturnDTO = new GeneralReturnDTO();
+      returnMessage.message = 'Exercicio Adicionado';
+      returnMessage.status = 200;
+      return returnMessage;
     } catch (error) {
       throw new HttpException(
         {
@@ -47,6 +52,28 @@ export class ExercisesController {
           error: 'Erro ao Adicionar exercicio',
         },
         HttpStatus.BAD_REQUEST,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: number) {
+    try {
+      await this.exerciseService.remove(id);
+      const returnMessage: GeneralReturnDTO = new GeneralReturnDTO();
+      returnMessage.message = 'Exercicio Deletado';
+      returnMessage.status = 200;
+      return returnMessage;
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.CONFLICT,
+          error: 'Erro ao deletar Exercício',
+        },
+        HttpStatus.CONFLICT,
         {
           cause: error,
         },

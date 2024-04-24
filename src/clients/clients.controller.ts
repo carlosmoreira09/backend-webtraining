@@ -69,7 +69,6 @@ export class ClientsController {
       );
     }
   }
-
   @Delete(':id')
   async delete(@Param('id') id: number) {
     try {

@@ -17,8 +17,8 @@ import { SheetsModule } from './sheets/sheets.module';
   imports: [
     ThrottlerModule.forRoot([
       {
-        ttl: 20000,
-        limit: 5,
+        ttl: 30000,
+        limit: 100,
       },
     ]),
     ConfigModule.forRoot(),
