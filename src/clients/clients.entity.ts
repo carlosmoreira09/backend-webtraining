@@ -15,6 +15,7 @@ export class ClientsEntity {
     name: 'full_name',
     nullable: false,
   })
+
   fullName: string;
 
   @Column()
