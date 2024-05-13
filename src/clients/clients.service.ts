@@ -3,10 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ClientsEntity } from './clients.entity';
 import { Repository } from 'typeorm';
 import { ClientDTO } from './clientDTO/cliente.dto';
-import * as bcrypt from 'bcrypt';
-import { SheetsEntity } from '../sheets/sheets.entity';
-import { CreateSheetDTO } from '../sheets/sheetsDTO/createSheetDTO.dto';
-import { SheetsController } from '../sheets/sheets.controller';
 
 @Injectable()
 export class ClientsService {
@@ -36,18 +32,6 @@ export class ClientsService {
         );
       });
   }
-
-  async updateSheet(updateSheet: SheetsEntity) {
-    return await this.clientsRepository
-      .findOneBy({ id_client: updateSheet.id_client.id_client })
-      .then(async (result) => {
-        await this.clientsRepository.update(
-          { email: result.email },
-          { ids_sheets: updateSheet.id_sheet },
-        );
-      });
-  }
-
   async remove(id: number) {
     return await this.clientsRepository
       .findOneBy({ id_client: id })

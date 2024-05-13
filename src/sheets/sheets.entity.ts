@@ -1,21 +1,13 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { ClientsEntity } from '../clients/clients.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'training_sheets' })
 export class SheetsEntity {
   @PrimaryGeneratedColumn()
   id_sheet: number;
-
+  @Column()
+  sheet_name: string;
+  @Column()
+  sheet_desc: string;
   @Column()
   id_exercise: string;
-
-  @OneToOne(() => ClientsEntity)
-  @JoinColumn()
-  id_client: ClientsEntity;
 }

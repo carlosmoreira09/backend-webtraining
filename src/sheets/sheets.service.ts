@@ -1,14 +1,11 @@
-/* eslint-disable prefer-const */
-import { Injectable, NotFoundException, ParseIntPipe } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SheetsEntity } from './sheets.entity';
 import { Repository } from 'typeorm';
 import { CreateSheetDTO } from './sheetsDTO/createSheetDTO.dto';
 import { ExercisesService } from '../exercises/exercises.service';
-import { ClientsService } from '../clients/clients.service';
-import { ExercisesEntity } from '../exercises/exercises.entity';
-import { UpdateSheetDTO } from './sheetsDTO/updateSheetDTO';
-import { ReturnSheetToFront } from './sheetsDTO/returnSheetToFront';
+import { ReturnSheetByClient } from './sheetsDTO/returnSheetByClient';
+import { ListSheetsDTO } from './sheetsDTO/listSheetsDTO.dto';
 
 @Injectable()
 export class SheetsService {
@@ -16,68 +13,65 @@ export class SheetsService {
     @InjectRepository(SheetsEntity)
     private readonly sheetsRepository: Repository<SheetsEntity>,
     private readonly exerciseService: ExercisesService,
-    private readonly clientService: ClientsService,
   ) {}
 
   async listSheets() {
-    return await this.sheetsRepository.find({
+    const listSheets: SheetsEntity[] = await this.sheetsRepository.find({
       select: {
         id_sheet: true,
+        id_exercise: true,
+        sheet_desc: true,
+        sheet_name: true,
       },
-      relations: ['id_client'],
     });
+    const listSheetWithExercises = [];
+    for (const sheet of listSheets) {
+      const sheetWithExerciseInfo = new ListSheetsDTO();
+      sheetWithExerciseInfo.id_sheet = sheet.id_sheet;
+      sheetWithExerciseInfo.sheet_desc = sheet.sheet_desc;
+      sheetWithExerciseInfo.sheet_name = sheet.sheet_name;
+      sheetWithExerciseInfo.exercise = await this.getExerciseInfo(
+        sheet.id_exercise,
+      );
+      listSheetWithExercises.push(sheetWithExerciseInfo);
+    }
+    return listSheetWithExercises;
+  }
+
+  async getExerciseInfo(ids: string) {
+    const listExercise = [];
+    const idSheets = ids.split(',');
+    for (const id of idSheets) {
+      console.log(id);
+      const exercise = await this.exerciseService.getExercise(parseInt(id));
+      listExercise.push(exercise);
+    }
+    return listExercise;
   }
   async listSheetByClient(id_sheet: number) {
-    const sheetToFront = new ReturnSheetToFront();
+    const sheetToFront = new ReturnSheetByClient();
     const sheet = await this.sheetsRepository.findOne({
       where: {
         id_sheet: id_sheet,
       },
       relations: ['id_client'],
     });
-    let listExercises = [];
+    const listExercises = [];
     for (const id of sheet.id_exercise.split(',')) {
       const exercisesDetails = await this.exerciseService.getExercise(
         parseInt(id),
       );
       listExercises.push(exercisesDetails);
     }
-    console.log(listExercises);
     sheetToFront.exercises = listExercises;
     sheetToFront.id_sheet = sheet.id_sheet;
-    sheetToFront.id_client = sheet.id_client;
-
     return sheetToFront;
   }
 
   async create(newSheet: CreateSheetDTO) {
     try {
-      const sheet = new SheetsEntity();
-      sheet.id_client = await this.clientService.clientInformation(
-        newSheet.id_client,
-      );
-      sheet.id_exercise = newSheet.id_exercise;
-      const addSheet = await this.sheetsRepository.save(sheet);
-      await this.clientService.updateSheet(addSheet);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async updateSheet(updateSheet: UpdateSheetDTO) {
-    try {
-      const sheet = new SheetsEntity();
-      sheet.id_client = await this.clientService.clientInformation(
-        updateSheet.id_client,
-      );
-      sheet.id_exercise = updateSheet.id_exercise;
-      await this.sheetsRepository.update(
-        {
-          id_sheet: updateSheet.id_sheet,
-        },
-        sheet,
-      );
-      await this.clientService.updateSheet(sheet);
+      const sheet = this.sheetsRepository.create(newSheet);
+      return await this.sheetsRepository.save(sheet);
     } catch (error) {
       console.log(error);
     }

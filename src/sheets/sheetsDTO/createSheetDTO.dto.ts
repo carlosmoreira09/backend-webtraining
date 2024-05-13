@@ -1,8 +1,10 @@
-import { IsInt, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class CreateSheetDTO {
   @IsString()
+  sheet_name: string;
+  @IsString()
   id_exercise: string;
-  @IsInt()
-  id_client: number;
+  @IsString()
+  sheet_desc: string;
 }

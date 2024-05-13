@@ -4,7 +4,9 @@ export class UpdateSheetDTO {
   @IsString()
   id_exercise: string;
   @IsInt()
-  id_client: number;
+  sheet_name: string;
   @IsInt()
   id_sheet: number;
+  @IsInt()
+  sheet_desc: string;
 }

@@ -53,7 +53,7 @@ export class SheetsController {
   async createSheet(@Body() newSheet: CreateSheetDTO) {
     try {
       await this.sheetsService.create(newSheet);
-      return 'Exercicio Inserido';
+      return 'Planilha Inserido';
     } catch (error) {
       console.log(error);
       throw new HttpException(
