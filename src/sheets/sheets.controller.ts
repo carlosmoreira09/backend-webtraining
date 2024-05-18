@@ -31,10 +31,10 @@ export class SheetsController {
       );
     }
   }
-  @Get(':id_client')
-  async listSheetByClient(@Param('id_client') id_client: number) {
+  @Get(':id_sheet')
+  async listSheetByClient(@Param('id_sheet') id_sheet: number) {
     try {
-      return await this.sheetsService.listSheetByClient(id_client);
+      return await this.sheetsService.listSheetById(id_sheet);
     } catch (error) {
       throw new HttpException(
         {

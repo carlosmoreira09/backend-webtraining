@@ -4,7 +4,6 @@ import { SheetsEntity } from './sheets.entity';
 import { Repository } from 'typeorm';
 import { CreateSheetDTO } from './sheetsDTO/createSheetDTO.dto';
 import { ExercisesService } from '../exercises/exercises.service';
-import { ReturnSheetByClient } from './sheetsDTO/returnSheetByClient';
 import { ListSheetsDTO } from './sheetsDTO/listSheetsDTO.dto';
 
 @Injectable()
@@ -17,11 +16,8 @@ export class SheetsService {
 
   async listSheets() {
     const listSheets: SheetsEntity[] = await this.sheetsRepository.find({
-      select: {
-        id_sheet: true,
-        id_exercise: true,
-        sheet_desc: true,
-        sheet_name: true,
+      order: {
+        id_sheet: 'DESC',
       },
     });
     const listSheetWithExercises = [];
@@ -29,9 +25,19 @@ export class SheetsService {
       const sheetWithExerciseInfo = new ListSheetsDTO();
       sheetWithExerciseInfo.id_sheet = sheet.id_sheet;
       sheetWithExerciseInfo.sheet_desc = sheet.sheet_desc;
+      sheetWithExerciseInfo.sheet_details = sheet.sheet_details;
       sheetWithExerciseInfo.sheet_name = sheet.sheet_name;
-      sheetWithExerciseInfo.exercise = await this.getExerciseInfo(
-        sheet.id_exercise,
+      sheetWithExerciseInfo.training_a = await this.getExerciseInfo(
+        sheet.training_a,
+      );
+      sheetWithExerciseInfo.training_b = await this.getExerciseInfo(
+        sheet.training_b,
+      );
+      sheetWithExerciseInfo.training_c = await this.getExerciseInfo(
+        sheet.training_c,
+      );
+      sheetWithExerciseInfo.training_d = await this.getExerciseInfo(
+        sheet.training_d,
       );
       listSheetWithExercises.push(sheetWithExerciseInfo);
     }
@@ -42,28 +48,55 @@ export class SheetsService {
     const listExercise = [];
     const idSheets = ids.split(',');
     for (const id of idSheets) {
-      console.log(id);
       const exercise = await this.exerciseService.getExercise(parseInt(id));
-      listExercise.push(exercise);
+      if (exercise) {
+        listExercise.push(exercise);
+      }
     }
     return listExercise;
   }
-  async listSheetByClient(id_sheet: number) {
-    const sheetToFront = new ReturnSheetByClient();
+  async listSheetById(id_sheet: number) {
+    const sheetToFront = new ListSheetsDTO();
     const sheet = await this.sheetsRepository.findOne({
       where: {
         id_sheet: id_sheet,
       },
-      relations: ['id_client'],
     });
-    const listExercises = [];
-    for (const id of sheet.id_exercise.split(',')) {
+    const listExercisesA = [];
+    const listExercisesB = [];
+    const listExercisesC = [];
+    const listExercisesD = [];
+    for (const id of sheet.training_a.split(',')) {
       const exercisesDetails = await this.exerciseService.getExercise(
         parseInt(id),
       );
-      listExercises.push(exercisesDetails);
+      listExercisesA.push(exercisesDetails);
     }
-    sheetToFront.exercises = listExercises;
+    for (const id of sheet.training_b.split(',')) {
+      const exercisesDetails = await this.exerciseService.getExercise(
+        parseInt(id),
+      );
+      listExercisesB.push(exercisesDetails);
+    }
+    for (const id of sheet.training_c.split(',')) {
+      const exercisesDetails = await this.exerciseService.getExercise(
+        parseInt(id),
+      );
+      listExercisesC.push(exercisesDetails);
+    }
+    for (const id of sheet.training_d.split(',')) {
+      const exercisesDetails = await this.exerciseService.getExercise(
+        parseInt(id),
+      );
+      listExercisesD.push(exercisesDetails);
+    }
+    sheetToFront.training_a = listExercisesA;
+    sheetToFront.training_b = listExercisesB;
+    sheetToFront.training_c = listExercisesC;
+    sheetToFront.training_d = listExercisesD;
+    sheetToFront.sheet_desc = sheet.sheet_desc;
+    sheetToFront.sheet_details = sheet.sheet_details;
+    sheetToFront.sheet_name = sheet.sheet_name;
     sheetToFront.id_sheet = sheet.id_sheet;
     return sheetToFront;
   }

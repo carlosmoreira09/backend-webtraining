@@ -9,5 +9,13 @@ export class SheetsEntity {
   @Column()
   sheet_desc: string;
   @Column()
-  id_exercise: string;
+  sheet_details: string;
+  @Column()
+  training_a: string;
+  @Column()
+  training_b: string;
+  @Column()
+  training_c: string;
+  @Column()
+  training_d: string;
 }
