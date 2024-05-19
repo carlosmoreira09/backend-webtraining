@@ -3,15 +3,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ExercisesEntity } from './exercises.entity';
 import { Repository } from 'typeorm';
 import { ExerciseDTO } from './exerciseDTO/exercise.dto';
+import { ClientsService } from '../clients/clients.service';
 
 @Injectable()
 export class ExercisesService {
   constructor(
     @InjectRepository(ExercisesEntity)
     private readonly exerciseRepository: Repository<ExercisesEntity>,
+    private clientService: ClientsService,
   ) {}
-  async create(newExercise: ExerciseDTO): Promise<ExercisesEntity> {
-    const exercise = this.exerciseRepository.create(newExercise);
+  async create(newExercise: ExerciseDTO, id: number): Promise<ExercisesEntity> {
+    newExercise.id_client = await this.clientService.getClient(id);
+    const exercise: ExercisesEntity =
+      this.exerciseRepository.create(newExercise);
     return await this.exerciseRepository.save(exercise);
   }
   async listAllExercises(): Promise<
@@ -20,9 +24,18 @@ export class ExercisesService {
     try {
       return await this.exerciseRepository.find({
         select: {
-          id_exercise: true,
-          exercise: true,
-          exercise_type: true,
+          admin: {
+            id_user: true,
+            fullName: true,
+            username: true,
+            email: true,
+          },
+        },
+        relations: {
+          admin: true,
+        },
+        order: {
+          id_exercise: 'DESC',
         },
       });
     } catch (error) {
@@ -38,9 +51,18 @@ export class ExercisesService {
         exercise_type: true,
         exercise_desc: true,
         repetition: true,
+        admin: {
+          id_user: true,
+          fullName: true,
+          username: true,
+          email: true,
+        },
       },
       where: {
         exercise_type: type,
+      },
+      relations: {
+        admin: true,
       },
     });
   }

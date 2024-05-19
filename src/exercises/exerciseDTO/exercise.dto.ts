@@ -1,4 +1,5 @@
 import { IsString } from 'class-validator';
+import { ClientsEntity } from '../../clients/clients.entity';
 
 export class ExerciseDTO {
   @IsString()
@@ -11,4 +12,5 @@ export class ExerciseDTO {
   training_type: string;
   @IsString()
   repetition: string;
+  id_client?: ClientsEntity;
 }

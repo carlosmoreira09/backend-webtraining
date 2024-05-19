@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ClientsEntity } from '../clients/clients.entity';
 
 @Entity({ name: 'training_sheets' })
 export class SheetsEntity {
@@ -18,4 +25,7 @@ export class SheetsEntity {
   training_c: string;
   @Column()
   training_d: string;
+  @ManyToOne(() => ClientsEntity, (client) => client.id_client)
+  @JoinColumn({ name: 'id_client' })
+  id_client: ClientsEntity;
 }

@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { SheetsService } from './sheets.service';
 import { CreateSheetDTO } from './sheetsDTO/createSheetDTO.dto';
+import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 
 @Controller('sheets')
 export class SheetsController {
@@ -53,7 +54,10 @@ export class SheetsController {
   async createSheet(@Body() newSheet: CreateSheetDTO) {
     try {
       await this.sheetsService.create(newSheet);
-      return 'Planilha Inserido';
+      const returnMessage: GeneralReturnDTO = new GeneralReturnDTO();
+      returnMessage.message = 'Planilha Adicionada';
+      returnMessage.status = 200;
+      return returnMessage;
     } catch (error) {
       console.log(error);
       throw new HttpException(

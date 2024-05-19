@@ -1,5 +1,6 @@
 import { IsNumber, IsObject, IsString } from 'class-validator';
 import { ExercisesEntity } from '../../exercises/exercises.entity';
+import { ClientsEntity } from '../../clients/clients.entity';
 
 export class ListSheetsDTO {
   @IsNumber()
@@ -10,6 +11,7 @@ export class ListSheetsDTO {
   sheet_desc: string;
   @IsString()
   sheet_details: string;
+  id_client: ClientsEntity;
   @IsObject()
   training_a: ExercisesEntity[];
   @IsObject()

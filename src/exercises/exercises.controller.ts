@@ -1,11 +1,13 @@
 import {
   Body,
-  Controller, Delete,
+  Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
   Param,
   Post,
+  Headers,
 } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
 import { ExerciseDTO } from './exerciseDTO/exercise.dto';
@@ -22,7 +24,6 @@ export class ExercisesController {
   async listExerciseByType(@Param('type') type: string) {
     try {
       return await this.exerciseService.listExerciseByType(type);
-
     } catch (error) {
       throw new HttpException(
         {
@@ -38,9 +39,12 @@ export class ExercisesController {
   }
 
   @Post()
-  async saveExercise(@Body() newExercise: ExerciseDTO) {
+  async saveExercise(
+    @Body() newExercise: ExerciseDTO,
+    @Headers('id_client') id_client: number,
+  ) {
     try {
-      await this.exerciseService.create(newExercise);
+      await this.exerciseService.create(newExercise, id_client);
       const returnMessage: GeneralReturnDTO = new GeneralReturnDTO();
       returnMessage.message = 'Exercicio Adicionado';
       returnMessage.status = 200;

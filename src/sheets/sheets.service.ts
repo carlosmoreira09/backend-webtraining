@@ -16,6 +16,9 @@ export class SheetsService {
 
   async listSheets() {
     const listSheets: SheetsEntity[] = await this.sheetsRepository.find({
+      relations: {
+        id_client: true,
+      },
       order: {
         id_sheet: 'DESC',
       },
@@ -27,6 +30,7 @@ export class SheetsService {
       sheetWithExerciseInfo.sheet_desc = sheet.sheet_desc;
       sheetWithExerciseInfo.sheet_details = sheet.sheet_details;
       sheetWithExerciseInfo.sheet_name = sheet.sheet_name;
+      sheetWithExerciseInfo.id_client = sheet.id_client;
       sheetWithExerciseInfo.training_a = await this.getExerciseInfo(
         sheet.training_a,
       );
@@ -98,6 +102,7 @@ export class SheetsService {
     sheetToFront.sheet_details = sheet.sheet_details;
     sheetToFront.sheet_name = sheet.sheet_name;
     sheetToFront.id_sheet = sheet.id_sheet;
+    sheetToFront.id_client = sheet.id_client;
     return sheetToFront;
   }
 

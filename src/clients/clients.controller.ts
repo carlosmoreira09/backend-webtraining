@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Headers,
 } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { ClientDTO } from './clientDTO/cliente.dto';
@@ -16,9 +17,12 @@ export class ClientsController {
   constructor(private readonly clientService: ClientsService) {}
 
   @Post()
-  async create(@Body() clientRequest: ClientDTO) {
+  async create(
+    @Body() clientRequest: ClientDTO,
+    @Headers('id_user') id_user: number,
+  ) {
     try {
-      await this.clientService.create(clientRequest);
+      await this.clientService.create(clientRequest, id_user);
       return 'Client Created';
     } catch (error) {
       throw new HttpException(
@@ -34,10 +38,10 @@ export class ClientsController {
     }
   }
 
-  @Get()
-  async listAll() {
+  @Get('/athletas/:id_user')
+  async listAll(@Param('id_user') id_user: number) {
     try {
-      return await this.clientService.list();
+      return await this.clientService.listClientByUser(id_user);
     } catch (error) {
       throw new HttpException(
         {

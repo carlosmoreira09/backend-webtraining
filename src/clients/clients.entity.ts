@@ -2,9 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   Timestamp,
 } from 'typeorm';
+import { UsersEntity } from '../users/users.entity';
 
 @Entity({ name: 'clients' })
 export class ClientsEntity {
@@ -15,7 +18,6 @@ export class ClientsEntity {
     name: 'full_name',
     nullable: false,
   })
-
   fullName: string;
 
   @Column()
@@ -38,6 +40,10 @@ export class ClientsEntity {
 
   @Column()
   ids_sheets: number;
+
+  @ManyToOne(() => UsersEntity, (users) => users.id_user)
+  @JoinColumn()
+  admin: UsersEntity;
 
   @Column({
     name: 'updated_at',

@@ -3,21 +3,48 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ClientsEntity } from './clients.entity';
 import { Repository } from 'typeorm';
 import { ClientDTO } from './clientDTO/cliente.dto';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class ClientsService {
   constructor(
     @InjectRepository(ClientsEntity)
     private readonly clientsRepository: Repository<ClientsEntity>,
+    private userService: UsersService,
   ) {}
 
-  async list() {
+  async listClientByUser(id_user: number) {
     return await this.clientsRepository.find({
-      where: { isActive: true },
+      select: {
+        admin: {
+          id_user: true,
+          username: true,
+          fullName: true,
+          email: true,
+        },
+      },
+      where: {
+        isActive: true,
+        admin: {
+          id_user: id_user,
+        },
+      },
+      relations: {
+        admin: true,
+      },
     });
   }
 
-  async create(newClient: ClientDTO) {
+  async getClient(id: number) {
+    return await this.clientsRepository.findOne({
+      where: {
+        id_client: id,
+      },
+    });
+  }
+
+  async create(newClient: ClientDTO, id_user: number) {
+    newClient.id_user = await this.userService.getUserInfo(id_user);
     const client = this.clientsRepository.create(newClient);
     return await this.clientsRepository.save(client);
   }
