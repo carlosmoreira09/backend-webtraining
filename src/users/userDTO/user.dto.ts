@@ -1,12 +1,4 @@
-export class UserDTO {
-  user: string;
-  password: string;
-}
-
-export class UserInfo {
-  id_user: number;
+export interface UserDTO {
   username: string;
-  email: string;
-  fullName: string;
-  createdAt: Date;
+  password: string;
 }

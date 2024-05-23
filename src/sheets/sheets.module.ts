@@ -7,8 +7,8 @@ import { ExercisesService } from '../exercises/exercises.service';
 import { ClientsService } from '../clients/clients.service';
 import { ExercisesEntity } from '../exercises/exercises.entity';
 import { ClientsEntity } from '../clients/clients.entity';
-import { UsersService } from '../users/users.service';
 import { UsersEntity } from '../users/users.entity';
+import { UsersService } from '../users/users.service';
 
 @Module({
   imports: [

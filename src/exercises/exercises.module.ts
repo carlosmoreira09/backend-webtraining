@@ -5,8 +5,9 @@ import { ExercisesController } from './exercises.controller';
 import { ExercisesService } from './exercises.service';
 import { ClientsService } from '../clients/clients.service';
 import { ClientsEntity } from '../clients/clients.entity';
-import { UsersService } from '../users/users.service';
+import { AuthService } from '../auth/auth.service';
 import { UsersEntity } from '../users/users.entity';
+import { UsersService } from '../users/users.service';
 
 @Module({
   imports: [

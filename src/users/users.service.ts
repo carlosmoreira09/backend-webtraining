@@ -2,8 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersEntity } from './users.entity';
 import { Repository } from 'typeorm';
-import { UserDTO, UserInfo } from './userDTO/user.dto';
 import * as bcrypt from 'bcrypt';
+import { UserDTO } from './userDTO/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -24,7 +24,7 @@ export class UsersService {
     );
   }
 
-  async getUserInfo(id: number) {
+  async getUserInfo(id: string) {
     return await this.userRepository.findOne({
       select: {
         id_user: true,
@@ -32,13 +32,13 @@ export class UsersService {
         username: true,
         email: true,
       },
-      where: { id_user: id },
+      where: { username: id },
     });
   }
   async update(userRequest: UserDTO) {
     let checkPassword: boolean;
     await this.userRepository
-      .findOneBy({ username: userRequest.user })
+      .findOneBy({ username: userRequest.username })
       .then(async (result) => {
         checkPassword = await bcrypt.compare(
           userRequest.password,
@@ -49,7 +49,7 @@ export class UsersService {
         }
       });
     return await this.userRepository.update(
-      { username: userRequest.user },
+      { username: userRequest.username },
       userRequest,
     );
   }
@@ -67,24 +67,9 @@ export class UsersService {
     });
   }
 
-  async login(userLogin: UserDTO): Promise<UserInfo> {
-    let checkPassword: boolean;
-    const userInfo = new UserInfo();
-    await this.userRepository
-      .findOneBy({ username: userLogin.user })
-      .then(async (result) => {
-        checkPassword = await bcrypt.compare(
-          userLogin.password,
-          result.password,
-        );
-        if (!checkPassword) {
-          throw new UnauthorizedException();
-        }
-        userInfo.id_user = result.id_user;
-        userInfo.email = result.email;
-        userInfo.fullName = result.fullName;
-      });
-
-    return userInfo;
+  async login(userData: UserDTO): Promise<UsersEntity | undefined> {
+    return await this.userRepository.findOneBy({
+      username: userData.username,
+    });
   }
 }

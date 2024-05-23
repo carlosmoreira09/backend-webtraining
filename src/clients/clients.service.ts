@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ClientsEntity } from './clients.entity';
 import { Repository } from 'typeorm';
 import { ClientDTO } from './clientDTO/cliente.dto';
+import { AuthService } from '../auth/auth.service';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
@@ -43,7 +44,7 @@ export class ClientsService {
     });
   }
 
-  async create(newClient: ClientDTO, id_user: number) {
+  async create(newClient: ClientDTO, id_user: any) {
     newClient.id_user = await this.userService.getUserInfo(id_user);
     const client = this.clientsRepository.create(newClient);
     return await this.clientsRepository.save(client);
