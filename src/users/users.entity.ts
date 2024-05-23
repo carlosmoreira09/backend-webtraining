@@ -28,6 +28,9 @@ export class UsersEntity {
   @Column({ default: true })
   isActive: boolean;
 
+  @Column({ default: 1 })
+  userType: number;
+
   @Column({
     name: 'updated_at',
     type: 'timestamp',
