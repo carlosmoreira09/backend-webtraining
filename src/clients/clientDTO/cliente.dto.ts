@@ -2,6 +2,7 @@ import { IsEmail, IsInt, IsString } from 'class-validator';
 import { SheetsEntity } from '../../sheets/sheets.entity';
 import { UsersEntity } from '../../users/users.entity';
 
+
 export class ClientDTO {
   @IsString()
   fullName?: string;

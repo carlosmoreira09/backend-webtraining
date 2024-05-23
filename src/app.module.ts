@@ -5,13 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import * as process from 'process';
-import { UserModule } from './users/users.module';
 import { ClientsModule } from './clients/clients.module';
 import { ExercisesModule } from './exercises/exercises.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { LoggingMiddleware } from './middlewares/logging-middleware';
 import { SheetsModule } from './sheets/sheets.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -25,10 +26,11 @@ import { SheetsModule } from './sheets/sheets.module';
     TypeOrmModule.forRootAsync({
       imports: [
         ConfigModule,
-        UserModule,
         ClientsModule,
         ExercisesModule,
         SheetsModule,
+        AuthModule,
+        UsersModule,
       ],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',

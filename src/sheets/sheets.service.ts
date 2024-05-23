@@ -25,7 +25,7 @@ export class SheetsService {
     });
     const listSheetWithExercises = [];
     for (const sheet of listSheets) {
-      const sheetWithExerciseInfo = new ListSheetsDTO();
+      const sheetWithExerciseInfo: ListSheetsDTO = null;
       sheetWithExerciseInfo.id_sheet = sheet.id_sheet;
       sheetWithExerciseInfo.sheet_desc = sheet.sheet_desc;
       sheetWithExerciseInfo.sheet_details = sheet.sheet_details;
@@ -60,7 +60,7 @@ export class SheetsService {
     return listExercise;
   }
   async listSheetById(id_sheet: number) {
-    const sheetToFront = new ListSheetsDTO();
+    const sheetToFront: ListSheetsDTO = null;
     const sheet = await this.sheetsRepository.findOne({
       where: {
         id_sheet: id_sheet,
