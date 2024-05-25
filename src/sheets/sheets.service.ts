@@ -111,7 +111,6 @@ export class SheetsService {
       const sheet = this.sheetsRepository.create(newSheet);
       return await this.sheetsRepository.save(sheet);
     } catch (error) {
-      console.log(error);
     }
   }
 }

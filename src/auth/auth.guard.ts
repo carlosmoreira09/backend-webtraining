@@ -7,12 +7,9 @@ export class AuthLocalGuard extends AuthGuard('local') {
   }
 
   handleRequest(err, user, info) {
-    console.log('handle existes', info);
-
     if (err || !user) {
       throw err || new UnauthorizedException();
     }
-    console.log(user)
     return user;
   }
 }

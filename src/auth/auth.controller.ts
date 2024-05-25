@@ -28,7 +28,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   async profile() {
-    console.log('inicio');
     return await this.authService.profile('cesmoreira');
   }
 }
