@@ -23,9 +23,10 @@ export class SheetsService {
         id_sheet: 'DESC',
       },
     });
-    const listSheetWithExercises = [];
+    const listSheetWithExercises: ListSheetsDTO[] = [];
+    const sheetWithExerciseInfo: ListSheetsDTO = new ListSheetsDTO();
+
     for (const sheet of listSheets) {
-      const sheetWithExerciseInfo: ListSheetsDTO = null;
       sheetWithExerciseInfo.id_sheet = sheet.id_sheet;
       sheetWithExerciseInfo.sheet_desc = sheet.sheet_desc;
       sheetWithExerciseInfo.sheet_details = sheet.sheet_details;

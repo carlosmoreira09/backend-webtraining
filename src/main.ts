@@ -8,7 +8,7 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { ValidationPipe } from '@nestjs/common';
-import { methods, session } from './auth/constants';
+import { methods, session } from './utils/constants';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
