@@ -12,7 +12,6 @@ export class UsersService {
     private readonly userRepository: Repository<UsersEntity>,
   ) {}
   async create(userRequest: UserDTO) {
-    userRequest.password = await bcrypt.hash(userRequest.password, 10);
     const user = this.userRepository.create(userRequest);
     return await this.userRepository.save(user);
   }
@@ -22,6 +21,14 @@ export class UsersService {
       { username: user },
       { isActive: false },
     );
+  }
+
+  async validadeUserExist(username: string) {
+    return await this.userRepository.findOne({
+      where: {
+        username: username,
+      },
+    });
   }
 
   async getUserInfo(id: string) {

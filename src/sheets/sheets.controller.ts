@@ -59,7 +59,6 @@ export class SheetsController {
       returnMessage.status = 200;
       return returnMessage;
     } catch (error) {
-      console.log(error);
       throw new HttpException(
         {
           statusCode: HttpStatus.BAD_REQUEST,

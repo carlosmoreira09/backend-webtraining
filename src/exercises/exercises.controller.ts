@@ -7,19 +7,23 @@ import {
   HttpStatus,
   Param,
   Post,
-  Headers,
+  Headers, UseGuards,
 } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
 import { ExerciseDTO } from './exerciseDTO/exercise.dto';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
+import { JwtAuthGuard } from '../auth/jwt.guard';
 
 @Controller('exercises')
 export class ExercisesController {
   constructor(private readonly exerciseService: ExercisesService) {}
+
+  @UseGuards(JwtAuthGuard)
   @Get()
   async listAll() {
     return await this.exerciseService.listAllExercises();
   }
+  @UseGuards(JwtAuthGuard)
   @Get(':type')
   async listExerciseByType(@Param('type') type: string) {
     try {
@@ -37,7 +41,7 @@ export class ExercisesController {
       );
     }
   }
-
+  @UseGuards(JwtAuthGuard)
   @Post()
   async saveExercise(
     @Body() newExercise: ExerciseDTO,
@@ -62,7 +66,7 @@ export class ExercisesController {
       );
     }
   }
-
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: number) {
     try {

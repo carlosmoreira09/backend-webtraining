@@ -4,9 +4,11 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-
+import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
+import { newUser, UserDTO } from '../users/userDTO/user.dto';
+import { UsersEntity } from '../users/users.entity';
 
 @Injectable()
 export class AuthService {
@@ -15,12 +17,16 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(data: any) {
-    const checkUserExists = await this.userService.getUserInfo(data);
+  async register(data: newUser) {
+    const checkUserExists = await this.userService.validadeUserExist(
+      data.username,
+    );
     if (checkUserExists) {
       throw new HttpException('User already registered', HttpStatus.FOUND);
     }
-    const createUser = await this.userService.create(data);
+    const newPassword = await bcrypt.hash(data.password, 12);
+    const newUser = { ...data, password: newPassword };
+    const createUser = await this.userService.create(newUser);
     if (createUser) {
       return {
         statusCode: 200,
@@ -29,11 +35,21 @@ export class AuthService {
     }
   }
 
-  async login(data: any) {
-    const checkUserExists = await this.userService.getUserInfo(data.username);
+  async login(data: UserDTO) {
+    const checkUserExists = await this.userService.validadeUserExist(
+      data.username,
+    );
 
     if (!checkUserExists) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    const checkPassword = await this.comparePassword(
+      data.password,
+      checkUserExists.password,
+    );
+    if (!checkPassword) {
+      throw new UnauthorizedException();
     }
     if (checkUserExists) {
       const accessToken = this.generateJWT({
@@ -63,19 +79,30 @@ export class AuthService {
     return await this.userService.getUserInfo(user_id);
   }
   async validateContributor(reviewData: any) {
-    const review = await this.userService.getUserInfo(reviewData.username);
-    if (reviewData.password !== review.password) {
-      return null;
+    const review = await this.userService.validadeUserExist(
+      reviewData.username,
+    );
+
+    const isMatch = await this.comparePassword(
+      reviewData.password,
+      review.password,
+    );
+    if (!isMatch) {
+      throw new UnauthorizedException();
     }
     return review;
   }
+  async comparePassword(password: string, hash: string) {
+    return await bcrypt.compare(password, hash);
+  }
   public async validate(token: string): Promise<boolean | never> {
     const decoded = await this.jwtService.verify(token);
-    console.log(decoded);
     if (!decoded) {
       throw new UnauthorizedException();
     }
-    const user = await this.userService.getUserInfo(decoded.username);
+    const user: UsersEntity = await this.userService.validadeUserExist(
+      decoded.username,
+    );
     if (!user) {
       throw new UnauthorizedException();
     }
