@@ -14,7 +14,7 @@ import { PassportModule } from '@nestjs/passport';
   imports: [
     ConfigModule.forRoot(),
     PassportModule.register({
-      defaultStrategy: 'jwt',
+      defaultStrategy: process.env.DEFAULT_STRATEGY,
       session: true,
     }),
     JwtModule.register({

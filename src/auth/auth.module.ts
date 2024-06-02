@@ -16,7 +16,7 @@ import { JwtStrategy } from '../guards/jwt-strategy';
     ConfigModule.forRoot(),
     TypeOrmModule.forFeature([ClientsEntity, UsersEntity]),
     PassportModule.register({
-      defaultStrategy: 'jwt',
+      defaultStrategy: process.env.DEFAULT_STRATEGY,
       session: true,
     }),
     JwtModule.register({

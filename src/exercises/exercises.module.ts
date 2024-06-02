@@ -17,7 +17,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ConfigModule.forRoot(),
     TypeOrmModule.forFeature([ExercisesEntity, ClientsEntity, UsersEntity]),
     PassportModule.register({
-      defaultStrategy: 'jwt',
+      defaultStrategy: process.env.DEFAULT_STRATEGY,
       session: true,
     }),
     JwtModule.register({

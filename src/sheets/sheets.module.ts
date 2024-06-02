@@ -23,7 +23,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       UsersEntity,
     ]),
     PassportModule.register({
-      defaultStrategy: 'jwt',
+      defaultStrategy: process.env.DEFAULT_STRATEGY,
       session: true,
     }),
     JwtModule.register({
