@@ -8,7 +8,6 @@ import { ClientsEntity } from '../clients/clients.entity';
 import { AuthService } from '../auth/auth.service';
 import { UsersEntity } from '../users/users.entity';
 import { UsersService } from '../users/users.service';
-import { JwtStrategy } from '../guards/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -35,7 +34,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ClientsService,
     UsersService,
     AuthService,
-    JwtStrategy,
   ],
 })
 export class ExercisesModule {}

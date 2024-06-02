@@ -1,7 +1,6 @@
-import { Inject, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from '../guards/jwt.strategy';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
@@ -10,6 +9,7 @@ import { ClientsEntity } from '../clients/clients.entity';
 import { UsersEntity } from '../users/users.entity';
 import { LocalStrategy } from '../guards/local-strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtStrategy } from '../guards/jwt-strategy';
 
 @Module({
   imports: [
