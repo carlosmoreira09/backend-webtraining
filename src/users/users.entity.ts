@@ -28,8 +28,8 @@ export class UsersEntity {
   @Column({ default: true })
   isActive: boolean;
 
-  @Column({ default: 1 })
-  userType: number;
+  @Column()
+  userType: string;
 
   @Column({
     name: 'updated_at',

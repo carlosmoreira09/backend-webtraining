@@ -1,6 +1,6 @@
 import { ExecutionContext, Inject, Injectable } from '@nestjs/common';
 import { AuthGuard, IAuthGuard } from '@nestjs/passport';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth/auth.service';
 import { UsersEntity } from '../users/users.entity';
 
 @Injectable()
@@ -19,6 +19,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') implements IAuthGuard {
         user = await this.helper.decode(jwtToken);
       }
     }
-    return !(user && user.username);
+    return !!(user && user.username);
   }
 }

@@ -8,7 +8,7 @@ import { ClientsEntity } from '../clients/clients.entity';
 import { AuthService } from '../auth/auth.service';
 import { UsersEntity } from '../users/users.entity';
 import { UsersService } from '../users/users.service';
-import { JwtStrategy } from '../auth/jwt.strategy';
+import { JwtStrategy } from '../guards/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { jwt_config } from '../utils/constants';

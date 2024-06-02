@@ -12,7 +12,7 @@ import {
 import { ExercisesService } from './exercises.service';
 import { ExerciseDTO } from './exerciseDTO/exercise.dto';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
-import { JwtAuthGuard } from '../auth/jwt.guard';
+import { JwtAuthGuard } from '../guards/jwt.guard';
 
 @Controller('exercises')
 export class ExercisesController {
