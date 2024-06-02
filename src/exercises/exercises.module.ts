@@ -11,7 +11,6 @@ import { UsersService } from '../users/users.service';
 import { JwtStrategy } from '../guards/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { jwt_config } from '../utils/constants';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
