@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
-import * as process from 'process';
 import { ClientsModule } from './clients/clients.module';
 import { ExercisesModule } from './exercises/exercises.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';

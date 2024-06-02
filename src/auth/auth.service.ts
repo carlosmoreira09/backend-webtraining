@@ -54,9 +54,10 @@ export class AuthService {
     if (checkUserExists) {
       const accessToken = this.generateJWT({
         id: checkUserExists.id_user,
-        sub: checkUserExists.username,
+        username: checkUserExists.username,
         name: checkUserExists.fullName,
         email: checkUserExists.email,
+        role: checkUserExists.userType,
       });
 
       return {
@@ -97,13 +98,10 @@ export class AuthService {
   }
   public async validate(token: string): Promise<boolean | never> {
     const decoded = await this.jwtService.verify(token);
-    if (!decoded) {
-      throw new UnauthorizedException();
-    }
     const user: UsersEntity = await this.userService.validadeUserExist(
       decoded.username,
     );
-    if (!user) {
+    if (!decoded || !user) {
       throw new UnauthorizedException();
     }
     return true;

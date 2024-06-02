@@ -8,17 +8,18 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { ValidationPipe } from '@nestjs/common';
-import { methods, session } from './utils/constants';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
+  const configService: ConfigService = new ConfigService();
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
   );
   await app.register(secureSession, {
-    secret: session.secret,
-    salt: session.salt,
-  })
+    secret: configService.get('SESSION_SECRET'),
+    salt: configService.get('SESSION_SALT'),
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -29,11 +30,11 @@ async function bootstrap() {
   await app.register(helmet);
   app.enableCors({
     origin: true,
-    methods: methods,
+    methods: process.env.METHODS_ALLOW,
     credentials: true,
   });
   app.setGlobalPrefix('api');
   await app.register(fastifyCsrfProtection);
   await app.listen(3000);
 }
-bootstrap();
+bootstrap().then();

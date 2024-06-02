@@ -9,17 +9,37 @@ import { ExercisesEntity } from '../exercises/exercises.entity';
 import { ClientsEntity } from '../clients/clients.entity';
 import { UsersEntity } from '../users/users.entity';
 import { UsersService } from '../users/users.service';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forFeature([
       SheetsEntity,
       ExercisesEntity,
       ClientsEntity,
       UsersEntity,
     ]),
+    PassportModule.register({
+      defaultStrategy: 'jwt',
+      session: true,
+    }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET_KEY,
+      signOptions: {
+        expiresIn: parseInt(process.env.JWT_EXPIRES_IN),
+      },
+    }),
   ],
   controllers: [SheetsController],
-  providers: [SheetsService, ExercisesService, ClientsService, UsersService],
+  providers: [
+    ConfigService,
+    SheetsService,
+    ExercisesService,
+    ClientsService,
+    UsersService,
+  ],
 })
 export class SheetsModule {}
