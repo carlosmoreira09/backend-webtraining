@@ -7,7 +7,8 @@ import {
   HttpStatus,
   Param,
   Post,
-  Headers, UseGuards,
+  Headers,
+  UseGuards,
 } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
 import { ExerciseDTO } from './exerciseDTO/exercise.dto';

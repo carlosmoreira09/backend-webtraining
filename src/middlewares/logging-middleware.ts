@@ -1,6 +1,5 @@
 import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Response, Request } from 'express';
-import { ParamsDictionary } from 'express-serve-static-core';
 
 @Injectable()
 export class LoggingMiddleware implements NestMiddleware {
@@ -18,6 +17,10 @@ export class LoggingMiddleware implements NestMiddleware {
           `${method} ${url} ${statusCode} - ${restTime - reqTime}`,
         );
       } else if (statusCode === 200) {
+        this.logger.log(
+          `${method} ${url} ${statusCode} - ${restTime - reqTime}`,
+        );
+      } else {
         this.logger.log(
           `${method} ${url} ${statusCode} - ${restTime - reqTime}`,
         );
