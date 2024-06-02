@@ -1,12 +1,25 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from '../guards/jwt.guard';
 import { newUser, UserDTO } from '../users/userDTO/user.dto';
 import { AuthLocalGuard } from '../guards/auth.guard';
+import { ExercisesService } from '../exercises/exercises.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private exerciseService: ExercisesService,
+  ) {}
 
   @Post('register')
   async register(@Body() data: newUser) {
@@ -29,5 +42,24 @@ export class AuthController {
   @Get('profile')
   async profile() {
     return await this.authService.profile('cesmoreira');
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':type')
+  async listExerciseByType(@Param('type') type: string) {
+    try {
+      return await this.exerciseService.listExerciseByType(type);
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          error: 'Tipo não encontrado',
+        },
+        HttpStatus.BAD_REQUEST,
+        {
+          cause: error,
+        },
+      );
+    }
   }
 }

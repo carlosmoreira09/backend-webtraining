@@ -61,7 +61,7 @@ export class SheetsService {
     return listExercise;
   }
   async listSheetById(id_sheet: number) {
-    const sheetToFront: ListSheetsDTO = null;
+    const sheetToFront: ListSheetsDTO = new ListSheetsDTO();
     const sheet = await this.sheetsRepository.findOne({
       where: {
         id_sheet: id_sheet,
@@ -112,6 +112,7 @@ export class SheetsService {
       const sheet = this.sheetsRepository.create(newSheet);
       return await this.sheetsRepository.save(sheet);
     } catch (error) {
+      throw new Error(error);
     }
   }
 }

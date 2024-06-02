@@ -6,15 +6,22 @@ import { ClientsService } from './clients.service';
 import { UsersEntity } from '../users/users.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from '../auth/auth.service';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from '../auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtStrategy } from '../guards/jwt-strategy';
+import { LocalStrategy } from '../guards/local-strategy';
 import { PassportModule } from '@nestjs/passport';
+import { ExercisesEntity } from '../exercises/exercises.entity';
+import { ExercisesService } from '../exercises/exercises.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    TypeOrmModule.forFeature([ClientsEntity, UsersEntity, ExercisesEntity]),
     PassportModule.register({
       defaultStrategy: process.env.DEFAULT_STRATEGY,
+      property: process.env.DEFAULT_USER,
       session: true,
     }),
     JwtModule.register({
@@ -23,8 +30,17 @@ import { PassportModule } from '@nestjs/passport';
         expiresIn: parseInt(process.env.JWT_EXPIRES_IN),
       },
     }),
-    TypeOrmModule.forFeature([ClientsEntity, UsersEntity])],
+    AuthModule,
+  ],
   controllers: [ClientsController],
-  providers: [ClientsService, UsersService, AuthService, JwtService],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    UsersService,
+    LocalStrategy,
+    ConfigService,
+    ExercisesService,
+    ClientsService,
+  ],
 })
 export class ClientsModule {}

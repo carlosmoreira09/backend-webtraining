@@ -1,23 +1,26 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ExercisesEntity } from './exercises.entity';
-import { ExercisesController } from './exercises.controller';
-import { ExercisesService } from './exercises.service';
-import { ClientsService } from '../clients/clients.service';
-import { ClientsEntity } from '../clients/clients.entity';
-import { AuthService } from '../auth/auth.service';
-import { UsersEntity } from '../users/users.entity';
-import { UsersService } from '../users/users.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { UsersService } from '../users/users.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ClientsEntity } from '../clients/clients.entity';
+import { UsersEntity } from '../users/users.entity';
+import { LocalStrategy } from '../guards/local-strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtStrategy } from '../guards/jwt-strategy';
+import { ClientsService } from '../clients/clients.service';
+import { ExercisesEntity } from './exercises.entity';
+import { ExercisesController } from './exercises.controller';
+import { AuthService } from '../auth/auth.service';
+import { ExercisesService } from './exercises.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forFeature([ExercisesEntity, ClientsEntity, UsersEntity]),
+    TypeOrmModule.forFeature([ClientsEntity, UsersEntity, ExercisesEntity]),
     PassportModule.register({
       defaultStrategy: process.env.DEFAULT_STRATEGY,
+      property: process.env.DEFAULT_USER,
       session: true,
     }),
     JwtModule.register({
@@ -29,11 +32,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   ],
   controllers: [ExercisesController],
   providers: [
+    AuthService,
+    JwtStrategy,
+    UsersService,
+    LocalStrategy,
     ConfigService,
     ExercisesService,
     ClientsService,
-    UsersService,
-    AuthService,
   ],
 })
 export class ExercisesModule {}

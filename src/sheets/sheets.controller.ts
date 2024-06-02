@@ -6,15 +6,18 @@ import {
   HttpStatus,
   Param,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { SheetsService } from './sheets.service';
 import { CreateSheetDTO } from './sheetsDTO/createSheetDTO.dto';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
+import { JwtAuthGuard } from '../guards/jwt.guard';
 
 @Controller('sheets')
 export class SheetsController {
   constructor(private readonly sheetsService: SheetsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async listAll() {
     try {
@@ -32,6 +35,7 @@ export class SheetsController {
       );
     }
   }
+  @UseGuards(JwtAuthGuard)
   @Get(':id_sheet')
   async listSheetByClient(@Param('id_sheet') id_sheet: number) {
     try {
@@ -50,6 +54,7 @@ export class SheetsController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createSheet(@Body() newSheet: CreateSheetDTO) {
     try {

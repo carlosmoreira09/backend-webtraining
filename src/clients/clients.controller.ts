@@ -8,14 +8,17 @@ import {
   Param,
   Post,
   Headers,
+  UseGuards,
 } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { ClientDTO } from './clientDTO/cliente.dto';
+import { JwtAuthGuard } from '../guards/jwt.guard';
 
 @Controller('clients')
 export class ClientsController {
   constructor(private readonly clientService: ClientsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() clientRequest: ClientDTO,
@@ -38,6 +41,7 @@ export class ClientsController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/athletas/:id_user')
   async listAll(@Param('id_user') id_user: number) {
     try {
@@ -56,6 +60,7 @@ export class ClientsController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async clientInformation(@Param('id') id: number) {
     try {
@@ -73,6 +78,7 @@ export class ClientsController {
       );
     }
   }
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: number) {
     try {
