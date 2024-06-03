@@ -115,4 +115,18 @@ export class SheetsService {
       throw new Error(error);
     }
   }
+  async delete(id_sheet: number) {
+    try {
+      this.sheetsRepository
+        .findOneBy({ id_sheet: id_sheet })
+        .then(async (result) => {
+          await this.sheetsRepository.update(
+            { id_sheet: result.id_sheet },
+            { deletedAt: new Date().toISOString() },
+          );
+        });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }

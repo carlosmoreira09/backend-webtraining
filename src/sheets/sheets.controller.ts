@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,
+  Controller, Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -68,6 +68,28 @@ export class SheetsController {
         {
           statusCode: HttpStatus.BAD_REQUEST,
           error: 'Erro ao Criar Planilha',
+        },
+        HttpStatus.BAD_REQUEST,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id_sheet')
+  async deleteSHeet(@Param('id_sheet') id_sheet: number) {
+    try {
+      await this.sheetsService.delete(id_sheet);
+      const returnMessage: GeneralReturnDTO = new GeneralReturnDTO();
+      returnMessage.message = 'Planilha Deletada';
+      returnMessage.status = 200;
+      return returnMessage;
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          error: 'Erro ao Deletar Planilha',
         },
         HttpStatus.BAD_REQUEST,
         {
