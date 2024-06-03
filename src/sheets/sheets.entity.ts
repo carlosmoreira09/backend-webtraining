@@ -1,9 +1,11 @@
 import {
-  Column, CreateDateColumn,
+  Column,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
-  PrimaryGeneratedColumn, Timestamp,
+  PrimaryGeneratedColumn,
+  Timestamp,
 } from 'typeorm';
 import { ClientsEntity } from '../clients/clients.entity';
 
@@ -25,7 +27,7 @@ export class SheetsEntity {
   training_c: string;
   @Column()
   training_d: string;
-  @CreateDateColumn({
+  @DeleteDateColumn({
     name: 'deleted_at',
     type: 'timestamp',
     default: null,
