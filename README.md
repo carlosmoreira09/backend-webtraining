@@ -1,74 +1,68 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+## Webtraining Application
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+### What is WebTraining Application ?
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This project is to manage and track training sheets in a gym.
 
-## Description
+### Functionalities
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Training Registration: Allows users to create and save different workouts.
+- Workout Management: Add, edit, and remove exercises from a workout sheet.
+- Progress Tracking: Visualize progress over time with graphs and statistics.
+- Intuitive Interface: Easy to use, even for beginners.
 
-## Installation
+### How it is work?
 
-```bash
-$ npm install
-```
+The Web training  Application is a tool that allows users (Personal Trainner) to create, edit and build training sheets to your athletes. It provides an intuitive interface to manage exercises, sets, reps and more.
 
-## Running the app
+### Main Stacks
 
-```bash
-# development
-$ npm run start
+- Angular 17
+- NestJS 10.0
+- Tailwind CSS
+- MySQL
 
-# watch mode
-$ npm run start:dev
 
-# production mode
-$ npm run start:prod
-```
+## Main Goals
 
-## Test
+The main objective of this application is to provide users with a practical and effective means of creating, editing and monitoring their exercise routines. With it, users can:
 
-```bash
-# unit tests
-$ npm run test
+- Structure their workouts according to their personal goals.
+- Keep a detailed history of their workouts.
+- Track progress and make adjustments as necessary.
+- Access data and statistics on their performance over time.
 
-# e2e tests
-$ npm run test:e2e
 
-# test coverage
-$ npm run test:cov
-```
+### Deployment Status
 
-## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+| Project Deployment Planning |
 
-## Stay in touch
+| Backend Releases | Estimated Date | Status |
+|------------------| --- | --- |
+| Version          | Estimated Date | Status |
+| 1.0              | 30th July | In time |
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+| SubTasks - Frontend | Estimated Date | Status |
+|---------------------|----------------| --- |
+| HomeModule          | 25th May       | Done |
+| AuthModule          | 27th May       | Done |
+| UserModule          | 28th May       | Done |
+| SheetModule         | 28th May       | Done |
+| ExercicesModule     | 28th May       | Done |
+| ClientModule        | 29th May       | Done |
+| Guards              | 1th June       | Done |
+| JwtService          | 2th June       | Done |
+| Integration Between UserXClient  | 5th June       | Ongoing |
+| Integration Between SheetXUser   | 10h June       | Waiting |
+| Integration Between SheetXClient | 15th June      | Waiting |
 
-## License
 
-Nest is [MIT licensed](LICENSE).
-# backend-webtraning
+| Project Improvements - Mapped |
+
+| Improvement                         | Estimated Date      | Status |
+|-------------------------------------|---------------------| --- |
+| Task                                | Estimated Date      | Status |
+| Handling errors                     | Not Planned         | Not Started |
+| Implementing model in Return Messages to front | Not Planned         | Not Started |
+| Endpoint to return exercise type    | Not Planned         | Not Started |
