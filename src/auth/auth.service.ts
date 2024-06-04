@@ -7,8 +7,9 @@ import {
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import { newUser, UserDTO } from '../users/userDTO/user.dto';
+import { NewUserDTO, UserDTO } from '../users/userDTO/user.dto';
 import { UsersEntity } from '../users/users.entity';
+import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +18,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(data: newUser) {
+  async register(data: NewUserDTO): Promise<GeneralReturnDTO> {
     const checkUserExists = await this.userService.validadeUserExist(
       data.username,
     );
@@ -26,7 +27,8 @@ export class AuthService {
     );
     if (checkUserExists) {
       throw new HttpException('Usuario já existe', HttpStatus.FOUND);
-    } else if (checkEmailExists) {
+    }
+    if (checkEmailExists) {
       throw new HttpException('Email já existe', HttpStatus.FOUND);
     }
     const newPassword = await bcrypt.hash(data.password, 12);
@@ -34,8 +36,8 @@ export class AuthService {
     const createUser = await this.userService.create(newUser);
     if (createUser) {
       return {
-        statusCode: 200,
-        message: 'Register Successfull',
+        status: 200,
+        message: 'Cliente Cadastrado com sucesso',
       };
     }
   }
