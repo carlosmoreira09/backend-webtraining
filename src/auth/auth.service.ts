@@ -21,11 +21,16 @@ export class AuthService {
     const checkUserExists = await this.userService.validadeUserExist(
       data.username,
     );
+    const checkEmailExists = await this.userService.validadeUserExist(
+      data.email,
+    );
     if (checkUserExists) {
-      throw new HttpException('User already registered', HttpStatus.FOUND);
+      throw new HttpException('Usuario já existe', HttpStatus.FOUND);
+    } else if (checkEmailExists) {
+      throw new HttpException('Email já existe', HttpStatus.FOUND);
     }
     const newPassword = await bcrypt.hash(data.password, 12);
-    const newUser = { ...data, password: newPassword };
+    const newUser: UserDTO = { ...data, password: newPassword };
     const createUser = await this.userService.create(newUser);
     if (createUser) {
       return {

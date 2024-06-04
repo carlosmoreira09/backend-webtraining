@@ -1,3 +1,5 @@
+import { Column, CreateDateColumn, DeleteDateColumn, Timestamp } from 'typeorm';
+
 export interface UserDTO {
   username: string;
   password: string;
@@ -9,5 +11,12 @@ export interface newUser {
   email: string;
   password: string;
   isActive?: boolean;
-  userType?: number;
+  userType: string;
+  paymentStatus: PaymentStatus;
+}
+
+
+export enum PaymentStatus {
+  pago = 'Pago',
+  delayed = 'Nao Pago',
 }

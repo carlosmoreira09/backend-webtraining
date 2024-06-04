@@ -1,10 +1,12 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   Timestamp,
 } from 'typeorm';
+import { PaymentStatus } from './userDTO/user.dto';
 @Entity({ name: 'users' })
 export class UsersEntity {
   @PrimaryGeneratedColumn()
@@ -19,7 +21,10 @@ export class UsersEntity {
   @Column()
   fullName: string;
 
-  @Column()
+  @Column({
+    unique: true,
+    nullable: false,
+  })
   email: string;
 
   @Column()
@@ -30,6 +35,18 @@ export class UsersEntity {
 
   @Column()
   userType: string;
+
+  @Column({
+    default: null,
+  })
+  paymentDate?: Date;
+
+  @Column({
+    type: 'enum',
+    enum: PaymentStatus,
+    default: PaymentStatus.pago,
+  })
+  paymentStatus: PaymentStatus;
 
   @Column({
     name: 'updated_at',
@@ -43,4 +60,9 @@ export class UsersEntity {
     type: 'timestamp',
   })
   createdAt?: Timestamp;
+  @DeleteDateColumn({
+    name: 'deleted_at',
+    type: 'timestamp',
+  })
+  deletedAt?: Timestamp;
 }

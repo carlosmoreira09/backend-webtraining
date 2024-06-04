@@ -23,14 +23,21 @@ export class UsersService {
     );
   }
 
-  async validadeUserExist(username: string) {
-    return await this.userRepository.findOne({
-      where: {
-        username: username,
-      },
-    });
+  async validadeUserExist(user: string) {
+    if (user.includes('@')) {
+      return await this.userRepository.findOne({
+        where: {
+          email: user,
+        },
+      });
+    } else {
+      return await this.userRepository.findOne({
+        where: {
+          username: user,
+        },
+      });
+    }
   }
-
   async getUserInfo(id: string) {
     return await this.userRepository.findOne({
       select: {
