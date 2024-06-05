@@ -38,7 +38,7 @@ export class UsersService {
       });
     }
   }
-  async getUserInfo(id: string) {
+  async getUserInfo(id: string): Promise<UsersEntity> {
     return await this.userRepository.findOne({
       select: {
         id_user: true,

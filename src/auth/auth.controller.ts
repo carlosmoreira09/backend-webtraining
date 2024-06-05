@@ -14,6 +14,7 @@ import { JwtAuthGuard } from '../guards/jwt.guard';
 import { NewUserDTO, UserDTO } from '../users/userDTO/user.dto';
 import { AuthLocalGuard } from '../guards/auth.guard';
 import { ExercisesService } from '../exercises/exercises.service';
+import { UsersEntity } from '../users/users.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -67,7 +68,7 @@ export class AuthController {
   }
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  async profile() {
+  async profile(): Promise<UsersEntity>{
     return await this.authService.profile('cesmoreira');
   }
 
