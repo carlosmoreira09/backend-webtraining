@@ -10,7 +10,8 @@ export class ClientsService {
   constructor(
     @InjectRepository(ClientsEntity)
     private readonly clientsRepository: Repository<ClientsEntity>,
-    private userService: UsersService) {}
+    private userService: UsersService,
+  ) {}
 
   async listAthletesByUser(id_user: number) {
     return await this.clientsRepository.find({
@@ -49,13 +50,11 @@ export class ClientsService {
       },
     });
   }
-
   async create(newClient: ClientDTO, id_user: any) {
-    newClient.id_user = await this.userService.getUserInfo(id_user);
+    newClient.admin = await this.userService.getUserInfo(id_user);
     const client = this.clientsRepository.create(newClient);
     return await this.clientsRepository.save(client);
   }
-
   async update(updateClient: ClientDTO) {
     return await this.clientsRepository
       .findOneBy({ email: updateClient.email })
@@ -76,5 +75,4 @@ export class ClientsService {
         );
       });
   }
-
 }

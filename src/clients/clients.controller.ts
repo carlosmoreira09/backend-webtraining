@@ -14,6 +14,7 @@ import { ClientsService } from './clients.service';
 import { ClientDTO } from './clientDTO/cliente.dto';
 import { JwtAuthGuard } from '../guards/jwt.guard';
 import { SheetsService } from '../sheets/sheets.service';
+import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 
 @Controller('clients')
 export class ClientsController {
@@ -30,7 +31,10 @@ export class ClientsController {
   ) {
     try {
       await this.clientService.create(clientRequest, id_user);
-      return 'Client Created';
+      const returnMessage: GeneralReturnDTO = new GeneralReturnDTO();
+      returnMessage.message = 'Cliente Adicionado';
+      returnMessage.status = 200;
+      return returnMessage;
     } catch (error) {
       throw new HttpException(
         {
