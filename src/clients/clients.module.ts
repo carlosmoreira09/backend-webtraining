@@ -6,7 +6,6 @@ import { ClientsService } from './clients.service';
 import { UsersEntity } from '../users/users.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from '../auth/auth.service';
-import { AuthModule } from '../auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from '../guards/jwt-strategy';
@@ -14,11 +13,17 @@ import { LocalStrategy } from '../guards/local-strategy';
 import { PassportModule } from '@nestjs/passport';
 import { ExercisesEntity } from '../exercises/exercises.entity';
 import { ExercisesService } from '../exercises/exercises.service';
-
+import { SheetsEntity } from '../sheets/sheets.entity';
+import { SheetsService } from '../sheets/sheets.service';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forFeature([ClientsEntity, UsersEntity, ExercisesEntity]),
+    TypeOrmModule.forFeature([
+      ClientsEntity,
+      UsersEntity,
+      ExercisesEntity,
+      SheetsEntity,
+    ]),
     PassportModule.register({
       defaultStrategy: process.env.DEFAULT_STRATEGY,
       property: process.env.DEFAULT_USER,
@@ -30,7 +35,6 @@ import { ExercisesService } from '../exercises/exercises.service';
         expiresIn: parseInt(process.env.JWT_EXPIRES_IN),
       },
     }),
-    AuthModule,
   ],
   controllers: [ClientsController],
   providers: [
@@ -39,8 +43,9 @@ import { ExercisesService } from '../exercises/exercises.service';
     UsersService,
     LocalStrategy,
     ConfigService,
-    ExercisesService,
     ClientsService,
+    ExercisesService,
+    SheetsService,
   ],
 })
 export class ClientsModule {}

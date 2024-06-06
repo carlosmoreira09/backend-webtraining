@@ -10,12 +10,19 @@ export class ClientsService {
   constructor(
     @InjectRepository(ClientsEntity)
     private readonly clientsRepository: Repository<ClientsEntity>,
-    private userService: UsersService,
-  ) {}
+    private userService: UsersService) {}
 
-  async listClientByUser(id_user: number) {
+  async listAthletesByUser(id_user: number) {
     return await this.clientsRepository.find({
       select: {
+        id_client: true,
+        fullName: true,
+        age: true,
+        email: true,
+        phone: true,
+        id_training: true,
+        ids_sheets: true,
+        old_sheets: true,
         admin: {
           id_user: true,
           username: true,
@@ -25,6 +32,7 @@ export class ClientsService {
       },
       where: {
         isActive: true,
+        deletedAt: null,
         admin: {
           id_user: id_user,
         },
@@ -34,7 +42,6 @@ export class ClientsService {
       },
     });
   }
-
   async getClient(id: number) {
     return await this.clientsRepository.findOne({
       where: {
@@ -70,7 +77,4 @@ export class ClientsService {
       });
   }
 
-  async clientInformation(id: number) {
-    return await this.clientsRepository.findOneBy({ id_client: id });
-  }
 }

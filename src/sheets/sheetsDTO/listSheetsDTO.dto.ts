@@ -6,7 +6,7 @@ export class ListSheetsDTO {
   sheet_name: string;
   sheet_desc: string;
   sheet_details: string;
-  id_client: ClientsEntity;
+  id_client: any;
   training_a: ExercisesEntity[];
   training_b: ExercisesEntity[];
   training_c: ExercisesEntity[];

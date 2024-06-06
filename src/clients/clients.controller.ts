@@ -13,10 +13,14 @@ import {
 import { ClientsService } from './clients.service';
 import { ClientDTO } from './clientDTO/cliente.dto';
 import { JwtAuthGuard } from '../guards/jwt.guard';
+import { SheetsService } from '../sheets/sheets.service';
 
 @Controller('clients')
 export class ClientsController {
-  constructor(private readonly clientService: ClientsService) {}
+  constructor(
+    private readonly clientService: ClientsService,
+    private readonly sheetService: SheetsService,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -42,10 +46,10 @@ export class ClientsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/athletas/:id_user')
-  async listAll(@Param('id_user') id_user: number) {
+  @Get('/:id_user')
+  async listAllByUser(@Param('id_user') id_user: number) {
     try {
-      return await this.clientService.listClientByUser(id_user);
+      return await this.clientService.listAthletesByUser(id_user);
     } catch (error) {
       throw new HttpException(
         {
@@ -59,17 +63,16 @@ export class ClientsController {
       );
     }
   }
-
   @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  async clientInformation(@Param('id') id: number) {
+  @Get('/sheet/:id_sheet')
+  async getSheetByClient(@Param('id_sheet') id_sheet: number) {
     try {
-      return await this.clientService.clientInformation(id);
+      return await this.sheetService.listSheetById(id_sheet);
     } catch (error) {
       throw new HttpException(
         {
           statusCode: HttpStatus.CONFLICT,
-          error: 'Erro recuperar informações do cliente',
+          error: 'Erro ao listar cliente',
         },
         HttpStatus.CONFLICT,
         {

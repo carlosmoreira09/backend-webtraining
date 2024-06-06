@@ -63,8 +63,30 @@ export class SheetsService {
   async listSheetById(id_sheet: number) {
     const sheetToFront: ListSheetsDTO = new ListSheetsDTO();
     const sheet = await this.sheetsRepository.findOne({
+      select: {
+        id_sheet: true,
+        sheet_name: true,
+        sheet_desc: true,
+        sheet_details: true,
+        training_a: true,
+        training_b: true,
+        training_c: true,
+        training_d: true,
+        id_client: {
+          id_client: true,
+          fullName: true,
+          email: true,
+          phone: true,
+          old_sheets: true,
+          id_training: true,
+          age: true,
+        },
+      },
       where: {
         id_sheet: id_sheet,
+      },
+      relations: {
+        id_client: true,
       },
     });
     const listExercisesA = [];

@@ -67,23 +67,4 @@ export class UsersService {
       userRequest,
     );
   }
-  async listAll() {
-    return await this.userRepository.find({
-      select: {
-        id_user: true,
-        fullName: true,
-        username: true,
-        email: true,
-      },
-      where: {
-        isActive: true,
-      },
-    });
-  }
-
-  async login(userData: UserDTO): Promise<UsersEntity | undefined> {
-    return await this.userRepository.findOneBy({
-      username: userData.username,
-    });
-  }
 }

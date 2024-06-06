@@ -1,6 +1,6 @@
 import {
   Column,
-  CreateDateColumn,
+  CreateDateColumn, DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -19,32 +19,28 @@ export class ClientsEntity {
     nullable: false,
   })
   fullName: string;
-
   @Column()
   age: number;
-
   @Column({
     unique: true,
     nullable: false,
   })
   email: string;
-
   @Column()
   phone: string;
-
+  @Column()
+  password: string;
   @Column({ default: 0 })
   id_training: string;
-
   @Column({ default: true })
   isActive: boolean;
-
   @Column()
   ids_sheets: number;
-
+  @Column()
+  old_sheets: string;
   @ManyToOne(() => UsersEntity, (users) => users.id_user)
   @JoinColumn()
   admin: UsersEntity;
-
   @Column({
     name: 'updated_at',
     type: 'timestamp',
@@ -57,4 +53,10 @@ export class ClientsEntity {
     type: 'timestamp',
   })
   createdAt?: Timestamp;
+
+  @DeleteDateColumn({
+    name: 'deleted_at',
+    type: 'timestamp',
+  })
+  deletedAt?: Timestamp;
 }
