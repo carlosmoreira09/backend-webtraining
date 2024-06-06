@@ -68,8 +68,8 @@ export class AuthController {
   }
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  async profile(): Promise<any> {
-    return await this.authService.profile('cesmoreira');
+  async profile(@Headers('id_user') id_user: number): Promise<UsersEntity> {
+    return await this.authService.profile(id_user);
   }
 
   @UseGuards(JwtAuthGuard)
