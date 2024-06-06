@@ -38,15 +38,9 @@ export class UsersService {
       });
     }
   }
-  async getUserInfo(id: string): Promise<UsersEntity> {
+  async getUserInfo(id: number): Promise<UsersEntity> {
     return await this.userRepository.findOne({
-      select: {
-        id_user: true,
-        fullName: true,
-        username: true,
-        email: true,
-      },
-      where: { username: id },
+      where: { id_user: id },
     });
   }
   async update(userRequest: UserDTO) {

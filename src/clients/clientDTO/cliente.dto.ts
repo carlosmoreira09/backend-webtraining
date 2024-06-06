@@ -1,12 +1,13 @@
 import { UsersEntity } from '../../users/users.entity';
 
-export class ClientDTO {
+export interface NewClientDTO {
   fullName: string;
   age: number;
   email: string;
   phone: string;
-  id_training?: string;
+  password: string;
+  id_training?: number;
   ids_sheets: number;
   old_sheets?: string;
-  admin: UsersEntity;
+  admin?: UsersEntity;
 }

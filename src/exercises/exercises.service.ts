@@ -4,6 +4,7 @@ import { ExercisesEntity } from './exercises.entity';
 import { Repository } from 'typeorm';
 import { ExerciseDTO } from './exerciseDTO/exercise.dto';
 import { ClientsService } from '../clients/clients.service';
+import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 
 @Injectable()
 export class ExercisesService {
@@ -12,11 +13,18 @@ export class ExercisesService {
     private readonly exerciseRepository: Repository<ExercisesEntity>,
     private clientService: ClientsService,
   ) {}
-  async create(newExercise: ExerciseDTO, id: number): Promise<ExercisesEntity> {
+  async create(
+    newExercise: ExerciseDTO,
+    id: number,
+  ): Promise<GeneralReturnDTO> {
     newExercise.id_client = await this.clientService.getClient(id);
     const exercise: ExercisesEntity =
       this.exerciseRepository.create(newExercise);
-    return await this.exerciseRepository.save(exercise);
+    await this.exerciseRepository.save(exercise);
+    return {
+      status: 201,
+      message: 'Exercício Salvo',
+    };
   }
   async listAllExercises(): Promise<
     Promise<ExercisesEntity[]> | Promise<Error>
@@ -66,12 +74,16 @@ export class ExercisesService {
       },
     });
   }
-  async remove(id_exercicio: number) {
-    return this.exerciseRepository
+  async remove(id_exercicio: number): Promise<GeneralReturnDTO> {
+    this.exerciseRepository
       .findOneBy({ id_exercise: id_exercicio })
       .then(async (result) => {
         await this.exerciseRepository.remove(result);
       });
+    return {
+      status: 200,
+      message: 'Exercise removido',
+    };
   }
 
   async getExercise(id: number) {

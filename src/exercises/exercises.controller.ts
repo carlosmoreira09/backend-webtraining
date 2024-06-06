@@ -49,11 +49,7 @@ export class ExercisesController {
     @Headers('id_client') id_client: number,
   ) {
     try {
-      await this.exerciseService.create(newExercise, id_client);
-      const returnMessage: GeneralReturnDTO = new GeneralReturnDTO();
-      returnMessage.message = 'Exercicio Adicionado';
-      returnMessage.status = 200;
-      return returnMessage;
+      return await this.exerciseService.create(newExercise, id_client);
     } catch (error) {
       throw new HttpException(
         {
@@ -71,11 +67,7 @@ export class ExercisesController {
   @Delete(':id')
   async delete(@Param('id') id: number) {
     try {
-      await this.exerciseService.remove(id);
-      const returnMessage: GeneralReturnDTO = new GeneralReturnDTO();
-      returnMessage.message = 'Exercicio Deletado';
-      returnMessage.status = 200;
-      return returnMessage;
+      return await this.exerciseService.remove(id);
     } catch (error) {
       throw new HttpException(
         {

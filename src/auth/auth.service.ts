@@ -83,8 +83,8 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
 
-  async profile(user_id: string): Promise<UsersEntity> {
-    return await this.userService.getUserInfo(user_id);
+  async profile(user_id: string) {
+    return user_id;
   }
   async validateContributor(reviewData: any) {
     const review = await this.userService.validadeUserExist(

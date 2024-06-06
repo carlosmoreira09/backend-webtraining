@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClientsEntity } from './clients.entity';
 import { Repository } from 'typeorm';
-import { ClientDTO } from './clientDTO/cliente.dto';
+import { NewClientDTO } from './clientDTO/cliente.dto';
 import { UsersService } from '../users/users.service';
+import * as bcrypt from 'bcrypt';
+import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 
 @Injectable()
 export class ClientsService {
@@ -50,12 +52,38 @@ export class ClientsService {
       },
     });
   }
-  async create(newClient: ClientDTO, id_user: any) {
-    newClient.admin = await this.userService.getUserInfo(id_user);
-    const client = this.clientsRepository.create(newClient);
-    return await this.clientsRepository.save(client);
+  async validadeUserExist(user: string) {
+    return await this.clientsRepository.findOne({
+      where: {
+        email: user,
+      },
+    });
   }
-  async update(updateClient: ClientDTO) {
+  async create(
+    newClient: NewClientDTO,
+    id_user: number,
+  ): Promise<GeneralReturnDTO> {
+    newClient.admin = await this.userService.getUserInfo(id_user);
+    if (!newClient.admin) {
+      throw new HttpException('Usuário não existe', HttpStatus.FOUND);
+    }
+    const checkUserExists = await this.validadeUserExist(newClient.email);
+    if (checkUserExists) {
+      throw new HttpException('Email já existe', HttpStatus.FOUND);
+    }
+    const newPassword = await bcrypt.hash(newClient.password, 12);
+    const newUser: NewClientDTO = { ...newClient, password: newPassword };
+    const createUser = this.clientsRepository.create(newUser);
+    const user = await this.clientsRepository.save(createUser);
+    console.log(user);
+    if (user) {
+      return {
+        status: 200,
+        message: 'Cliente Cadastrado com sucesso',
+      };
+    }
+  }
+  async update(updateClient: NewClientDTO) {
     return await this.clientsRepository
       .findOneBy({ email: updateClient.email })
       .then(async (result) => {

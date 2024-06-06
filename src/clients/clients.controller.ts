@@ -11,10 +11,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ClientsService } from './clients.service';
-import { ClientDTO } from './clientDTO/cliente.dto';
+import { NewClientDTO } from './clientDTO/cliente.dto';
 import { JwtAuthGuard } from '../guards/jwt.guard';
 import { SheetsService } from '../sheets/sheets.service';
-import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 
 @Controller('clients')
 export class ClientsController {
@@ -26,20 +25,16 @@ export class ClientsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(
-    @Body() clientRequest: ClientDTO,
+    @Body() clientRequest: NewClientDTO,
     @Headers('id_user') id_user: number,
   ) {
     try {
-      await this.clientService.create(clientRequest, id_user);
-      const returnMessage: GeneralReturnDTO = new GeneralReturnDTO();
-      returnMessage.message = 'Cliente Adicionado';
-      returnMessage.status = 200;
-      return returnMessage;
+      return await this.clientService.create(clientRequest, id_user);
     } catch (error) {
       throw new HttpException(
         {
           statusCode: HttpStatus.CONFLICT,
-          error: 'Email já existe',
+          error: 'Dados Inválidos',
         },
         HttpStatus.CONFLICT,
         {

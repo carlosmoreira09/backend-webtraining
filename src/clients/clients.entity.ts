@@ -1,6 +1,7 @@
 import {
   Column,
-  CreateDateColumn, DeleteDateColumn,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -30,14 +31,21 @@ export class ClientsEntity {
   phone: string;
   @Column()
   password: string;
-  @Column({ default: 0 })
-  id_training: string;
-  @Column({ default: true })
-  isActive: boolean;
-  @Column()
-  ids_sheets: number;
-  @Column()
-  old_sheets: string;
+  @Column({ nullable: true })
+  id_training?: number;
+  @Column({
+    default: true,
+    nullable: true,
+  })
+  isActive?: boolean;
+  @Column({
+    nullable: true,
+  })
+  ids_sheets?: number;
+  @Column({
+    nullable: true,
+  })
+  old_sheets?: string;
   @ManyToOne(() => UsersEntity, (users) => users.id_user)
   @JoinColumn()
   admin: UsersEntity;
