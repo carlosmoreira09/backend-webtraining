@@ -93,14 +93,18 @@ export class ClientsService {
         );
       });
   }
-  async remove(id: number) {
-    return await this.clientsRepository
+  async remove(id: number): Promise<GeneralReturnDTO> {
+    await this.clientsRepository
       .findOneBy({ id_client: id })
       .then(async (result) => {
         await this.clientsRepository.update(
           { id_client: result.id_client },
-          { isActive: false },
+          { isActive: false, deletedAt: new Date() },
         );
       });
+    return {
+      status: 200,
+      message: 'Cliente Deletado com sucesso',
+    };
   }
 }
