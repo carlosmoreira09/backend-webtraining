@@ -1,6 +1,7 @@
 import {
   Body,
-  Controller, Delete,
+  Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -18,10 +19,10 @@ export class SheetsController {
   constructor(private readonly sheetsService: SheetsService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get()
-  async listAll() {
+  @Get('client/:id_user')
+  async listAll(@Param('id_user') id_user: number) {
     try {
-      return await this.sheetsService.listSheets();
+      return await this.sheetsService.listSheets(id_user);
     } catch (error) {
       throw new HttpException(
         {

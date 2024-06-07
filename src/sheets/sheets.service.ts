@@ -14,8 +14,13 @@ export class SheetsService {
     private readonly exerciseService: ExercisesService,
   ) {}
 
-  async listSheets() {
+  async listSheets(id_user: number) {
     const listSheets: SheetsEntity[] = await this.sheetsRepository.find({
+      where: {
+        admin: {
+          id_user: id_user,
+        },
+      },
       relations: {
         id_client: true,
       },

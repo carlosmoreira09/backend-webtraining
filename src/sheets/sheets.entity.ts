@@ -8,6 +8,7 @@ import {
   Timestamp,
 } from 'typeorm';
 import { ClientsEntity } from '../clients/clients.entity';
+import { UsersEntity } from '../users/users.entity';
 
 @Entity({ name: 'training_sheets' })
 export class SheetsEntity {
@@ -36,4 +37,8 @@ export class SheetsEntity {
   @ManyToOne(() => ClientsEntity, (client) => client.id_client)
   @JoinColumn({ name: 'id_client' })
   id_client: ClientsEntity;
+
+  @ManyToOne(() => UsersEntity, (users) => users.id_user)
+  @JoinColumn()
+  admin: UsersEntity;
 }

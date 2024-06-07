@@ -1,5 +1,4 @@
 import { ExercisesEntity } from '../../exercises/exercises.entity';
-import { ClientsEntity } from '../../clients/clients.entity';
 
 export class ListSheetsDTO {
   id_sheet: number;
