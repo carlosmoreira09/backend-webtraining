@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateSheetDTO } from './sheetsDTO/createSheetDTO.dto';
 import { ExercisesService } from '../exercises/exercises.service';
 import { ListSheetsDTO } from './sheetsDTO/listSheetsDTO.dto';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class SheetsService {
@@ -12,6 +13,7 @@ export class SheetsService {
     @InjectRepository(SheetsEntity)
     private readonly sheetsRepository: Repository<SheetsEntity>,
     private readonly exerciseService: ExercisesService,
+    private readonly userService: UsersService,
   ) {}
 
   async listSheets(id_user: number) {
@@ -134,8 +136,9 @@ export class SheetsService {
     return sheetToFront;
   }
 
-  async create(newSheet: CreateSheetDTO) {
+  async create(newSheet: CreateSheetDTO, id_user: number) {
     try {
+      newSheet.admin = await this.userService.getUserInfo(id_user);
       const sheet = this.sheetsRepository.create(newSheet);
       return await this.sheetsRepository.save(sheet);
     } catch (error) {

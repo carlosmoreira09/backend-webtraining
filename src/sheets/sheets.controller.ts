@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Headers,
   UseGuards,
 } from '@nestjs/common';
 import { SheetsService } from './sheets.service';
@@ -57,9 +58,11 @@ export class SheetsController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async createSheet(@Body() newSheet: CreateSheetDTO) {
+  async createSheet(@Body() newSheet: CreateSheetDTO,
+    @Headers('id_user') id_user: number,
+  ) {
     try {
-      await this.sheetsService.create(newSheet);
+      await this.sheetsService.create(newSheet,id_user);
       const returnMessage: GeneralReturnDTO = new GeneralReturnDTO();
       returnMessage.message = 'Planilha Adicionada';
       returnMessage.status = 200;
