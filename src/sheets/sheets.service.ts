@@ -6,6 +6,7 @@ import { CreateSheetDTO } from './sheetsDTO/createSheetDTO.dto';
 import { ExercisesService } from '../exercises/exercises.service';
 import { ListSheetsDTO } from './sheetsDTO/listSheetsDTO.dto';
 import { UsersService } from '../users/users.service';
+import { ClientsService } from '../clients/clients.service';
 
 @Injectable()
 export class SheetsService {
@@ -14,6 +15,7 @@ export class SheetsService {
     private readonly sheetsRepository: Repository<SheetsEntity>,
     private readonly exerciseService: ExercisesService,
     private readonly userService: UsersService,
+    private readonly clientService: ClientsService,
   ) {}
 
   async listSheets(id_user: number) {
@@ -138,7 +140,11 @@ export class SheetsService {
 
   async create(newSheet: CreateSheetDTO, id_user: number) {
     try {
+      const id_client = newSheet.id_client;
       newSheet.admin = await this.userService.getUserInfo(id_user);
+      newSheet.id_client = await this.clientService.getClient(
+        parseInt(id_client),
+      );
       const sheet = this.sheetsRepository.create(newSheet);
       return await this.sheetsRepository.save(sheet);
     } catch (error) {

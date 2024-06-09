@@ -1,6 +1,5 @@
 import { IsString } from 'class-validator';
 import { UsersEntity } from '../../users/users.entity';
-import { ClientsEntity } from '../../clients/clients.entity';
 
 export class CreateSheetDTO {
   @IsString()
@@ -18,5 +17,5 @@ export class CreateSheetDTO {
   @IsString()
   training_d?: string;
   admin?: UsersEntity;
-  id_client?: ClientsEntity;
+  id_client?: any;
 }

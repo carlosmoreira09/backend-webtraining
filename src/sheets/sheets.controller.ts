@@ -62,7 +62,7 @@ export class SheetsController {
     @Headers('id_user') id_user: number,
   ) {
     try {
-      await this.sheetsService.create(newSheet,id_user);
+      await this.sheetsService.create(newSheet, id_user);
       const returnMessage: GeneralReturnDTO = new GeneralReturnDTO();
       returnMessage.message = 'Planilha Adicionada';
       returnMessage.status = 200;

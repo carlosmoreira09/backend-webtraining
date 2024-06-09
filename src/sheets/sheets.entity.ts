@@ -36,7 +36,7 @@ export class SheetsEntity {
   deletedAt?: Timestamp;
   @ManyToOne(() => ClientsEntity, (client) => client.id_client)
   @JoinColumn({ name: 'id_client' })
-  id_client: ClientsEntity;
+  id_client?: ClientsEntity;
 
   @ManyToOne(() => UsersEntity, (users) => users.id_user)
   @JoinColumn()
