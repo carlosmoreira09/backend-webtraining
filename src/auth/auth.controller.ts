@@ -5,7 +5,6 @@ import {
   Headers,
   HttpException,
   HttpStatus,
-  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -13,30 +12,27 @@ import { AuthService } from './auth.service';
 import { JwtAuthGuard } from '../guards/jwt.guard';
 import { NewUserDTO, UserDTO } from '../users/userDTO/user.dto';
 import { AuthLocalGuard } from '../guards/auth.guard';
-import { ExercisesService } from '../exercises/exercises.service';
 import { UsersEntity } from '../users/users.entity';
+import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private authService: AuthService,
-    private exerciseService: ExercisesService,
-  ) {}
+  constructor(private authService: AuthService) {}
 
   @UseGuards(JwtAuthGuard)
   @Post('register')
   async register(
     @Body() data: NewUserDTO,
     @Headers('user_role') user_role: string,
-  ) {
+  ): Promise<Promise<GeneralReturnDTO> | HttpException> {
     if (user_role === 'admin') {
       try {
         return await this.authService.register(data);
-      } catch(error) {
+      } catch (error) {
         throw new HttpException(
           {
             statusCode: HttpStatus.BAD_REQUEST,
-            error: 'Usuário sem acesso',
+            error: 'Dados Inválidos',
           },
           HttpStatus.BAD_REQUEST,
           {
@@ -47,7 +43,7 @@ export class AuthController {
     } else {
       return new HttpException(
         {
-          statusCode: HttpStatus.BAD_REQUEST,
+          statusCode: HttpStatus.UNAUTHORIZED,
           error: 'Usuário sem acesso',
         },
         HttpStatus.BAD_REQUEST,
@@ -70,24 +66,5 @@ export class AuthController {
   @Get('profile')
   async profile(@Headers('id_user') id_user: number): Promise<UsersEntity> {
     return await this.authService.profile(id_user);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get(':type')
-  async listExerciseByType(@Param('type') type: string) {
-    try {
-      return await this.exerciseService.listExerciseByType(type);
-    } catch (error) {
-      throw new HttpException(
-        {
-          statusCode: HttpStatus.BAD_REQUEST,
-          error: 'Tipo não encontrado',
-        },
-        HttpStatus.BAD_REQUEST,
-        {
-          cause: error,
-        },
-      );
-    }
   }
 }

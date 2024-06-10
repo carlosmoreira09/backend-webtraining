@@ -51,7 +51,10 @@ export class ExercisesService {
     }
   }
 
-  async listExerciseByType(type: string): Promise<ExercisesEntity[]> {
+  async listExerciseByType(
+    type: string,
+    id_user: number,
+  ): Promise<ExercisesEntity[]> {
     return await this.exerciseRepository.find({
       select: {
         id_exercise: true,
@@ -68,6 +71,9 @@ export class ExercisesService {
       },
       where: {
         exercise_type: type,
+        admin: {
+          id_user: id_user,
+        },
       },
       relations: {
         admin: true,
