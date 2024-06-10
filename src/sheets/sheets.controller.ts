@@ -14,6 +14,7 @@ import { SheetsService } from './sheets.service';
 import { CreateSheetDTO } from './sheetsDTO/createSheetDTO.dto';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 import { JwtAuthGuard } from '../guards/jwt.guard';
+import { ListSheetsDTO } from './sheetsDTO/listSheetsDTO.dto';
 
 @Controller('sheets')
 export class SheetsController {
@@ -39,7 +40,9 @@ export class SheetsController {
   }
   @UseGuards(JwtAuthGuard)
   @Get(':id_sheet')
-  async listSheetByClient(@Param('id_sheet') id_sheet: number) {
+  async listSheetByClient(
+    @Param('id_sheet') id_sheet: number,
+  ): Promise<ListSheetsDTO> {
     try {
       return await this.sheetsService.listSheetById(id_sheet);
     } catch (error) {

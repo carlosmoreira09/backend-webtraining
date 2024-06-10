@@ -69,7 +69,7 @@ export class SheetsService {
     }
     return listExercise;
   }
-  async listSheetById(id_sheet: number) {
+  async listSheetById(id_sheet: number): Promise<ListSheetsDTO> {
     const sheetToFront: ListSheetsDTO = new ListSheetsDTO();
     const sheet = await this.sheetsRepository.findOne({
       select: {
