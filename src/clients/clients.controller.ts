@@ -3,11 +3,11 @@ import {
   Controller,
   Delete,
   Get,
+  Headers,
   HttpException,
   HttpStatus,
   Param,
   Post,
-  Headers,
   UseGuards,
 } from '@nestjs/common';
 import { ClientsService } from './clients.service';
@@ -20,7 +20,8 @@ export class ClientsController {
   constructor(
     private readonly clientService: ClientsService,
     private readonly sheetService: SheetsService,
-  ) {}
+  ) {
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -62,6 +63,7 @@ export class ClientsController {
       );
     }
   }
+
   @UseGuards(JwtAuthGuard)
   @Get('/sheet/:id_sheet')
   async getSheetByClient(@Param('id_sheet') id_sheet: number) {
@@ -80,6 +82,7 @@ export class ClientsController {
       );
     }
   }
+
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: number) {

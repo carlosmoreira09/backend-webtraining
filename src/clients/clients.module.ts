@@ -15,6 +15,7 @@ import { ExercisesEntity } from '../exercises/exercises.entity';
 import { ExercisesService } from '../exercises/exercises.service';
 import { SheetsEntity } from '../sheets/sheets.entity';
 import { SheetsService } from '../sheets/sheets.service';
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -48,4 +49,5 @@ import { SheetsService } from '../sheets/sheets.service';
     SheetsService,
   ],
 })
-export class ClientsModule {}
+export class ClientsModule {
+}

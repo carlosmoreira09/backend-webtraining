@@ -3,11 +3,11 @@ import {
   Controller,
   Delete,
   Get,
+  Headers,
   HttpException,
   HttpStatus,
   Param,
   Post,
-  Headers,
   UseGuards,
 } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
@@ -17,13 +17,15 @@ import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 
 @Controller('exercises')
 export class ExercisesController {
-  constructor(private readonly exerciseService: ExercisesService) {}
+  constructor(private readonly exerciseService: ExercisesService) {
+  }
 
   @UseGuards(JwtAuthGuard)
   @Get()
   async listAll() {
     return await this.exerciseService.listAllExercises();
   }
+
   @UseGuards(JwtAuthGuard)
   @Get(':type')
   async listExerciseByType(
@@ -45,6 +47,7 @@ export class ExercisesController {
       );
     }
   }
+
   @UseGuards(JwtAuthGuard)
   @Post()
   async saveExercise(
@@ -66,6 +69,7 @@ export class ExercisesController {
       );
     }
   }
+
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: number): Promise<GeneralReturnDTO> {

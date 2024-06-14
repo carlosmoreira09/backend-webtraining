@@ -13,7 +13,8 @@ export class ClientsService {
     @InjectRepository(ClientsEntity)
     private readonly clientsRepository: Repository<ClientsEntity>,
     private userService: UsersService,
-  ) {}
+  ) {
+  }
 
   async listAthletesByUser(id_user: number) {
     return await this.clientsRepository.find({
@@ -45,6 +46,7 @@ export class ClientsService {
       },
     });
   }
+
   async getClient(id: number) {
     return await this.clientsRepository.findOne({
       where: {
@@ -52,6 +54,7 @@ export class ClientsService {
       },
     });
   }
+
   async validadeUserExist(user: string) {
     return await this.clientsRepository.findOne({
       where: {
@@ -59,6 +62,7 @@ export class ClientsService {
       },
     });
   }
+
   async create(
     newClient: NewClientDTO,
     id_user: number,
@@ -83,6 +87,7 @@ export class ClientsService {
       };
     }
   }
+
   async update(updateClient: NewClientDTO) {
     return await this.clientsRepository
       .findOneBy({ email: updateClient.email })
@@ -93,6 +98,7 @@ export class ClientsService {
         );
       });
   }
+
   async remove(id: number): Promise<GeneralReturnDTO> {
     await this.clientsRepository
       .findOneBy({ id_client: id })

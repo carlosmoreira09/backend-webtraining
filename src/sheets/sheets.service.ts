@@ -16,7 +16,8 @@ export class SheetsService {
     private readonly exerciseService: ExercisesService,
     private readonly userService: UsersService,
     private readonly clientService: ClientsService,
-  ) {}
+  ) {
+  }
 
   async listSheets(id_user: number) {
     const listSheets: SheetsEntity[] = await this.sheetsRepository.find({
@@ -69,6 +70,7 @@ export class SheetsService {
     }
     return listExercise;
   }
+
   async listSheetById(id_sheet: number): Promise<ListSheetsDTO> {
     const sheetToFront: ListSheetsDTO = new ListSheetsDTO();
     const sheet = await this.sheetsRepository.findOne({
@@ -151,6 +153,7 @@ export class SheetsService {
       throw new Error(error);
     }
   }
+
   async delete(id_sheet: number) {
     try {
       this.sheetsRepository

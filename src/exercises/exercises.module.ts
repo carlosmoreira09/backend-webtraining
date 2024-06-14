@@ -41,4 +41,5 @@ import { ExercisesService } from './exercises.service';
     ClientsService,
   ],
 })
-export class ExercisesModule {}
+export class ExercisesModule {
+}

@@ -41,4 +41,5 @@ import { ClientsService } from '../clients/clients.service';
     ClientsService,
   ],
 })
-export class AuthModule {}
+export class AuthModule {
+}

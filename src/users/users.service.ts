@@ -10,7 +10,9 @@ export class UsersService {
   constructor(
     @InjectRepository(UsersEntity)
     private readonly userRepository: Repository<UsersEntity>,
-  ) {}
+  ) {
+  }
+
   async create(userRequest: UserDTO) {
     const user = this.userRepository.create(userRequest);
     return await this.userRepository.save(user);
@@ -38,11 +40,13 @@ export class UsersService {
       });
     }
   }
+
   async getUserInfo(id: number): Promise<UsersEntity> {
     return await this.userRepository.findOne({
       where: { id_user: id },
     });
   }
+
   async update(userRequest: UserDTO) {
     let checkPassword: boolean;
     await this.userRepository

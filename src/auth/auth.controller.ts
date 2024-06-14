@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Headers,
-  HttpException,
-  HttpStatus,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Headers, HttpException, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from '../guards/jwt.guard';
 import { NewUserDTO, UserDTO } from '../users/userDTO/user.dto';
@@ -17,7 +8,8 @@ import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post('register')
@@ -53,6 +45,7 @@ export class AuthController {
       );
     }
   }
+
   @UseGuards(AuthLocalGuard)
   @Post('login')
   async login(@Body() data: UserDTO) {
@@ -62,6 +55,7 @@ export class AuthController {
       return error;
     }
   }
+
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   async profile(@Headers('id_user') id_user: number): Promise<UsersEntity> {

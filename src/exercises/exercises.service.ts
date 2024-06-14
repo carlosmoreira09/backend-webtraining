@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ExercisesEntity } from './exercises.entity';
 import { Repository } from 'typeorm';
 import { ExerciseDTO } from './exerciseDTO/exercise.dto';
-import { ClientsService } from '../clients/clients.service';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 import { UsersService } from '../users/users.service';
 
@@ -14,6 +13,7 @@ export class ExercisesService {
     private readonly exerciseRepository: Repository<ExercisesEntity>,
     private userService: UsersService,
   ) {}
+
   async create(
     newExercise: ExerciseDTO,
     id: number,
@@ -28,6 +28,7 @@ export class ExercisesService {
       message: 'Exercício Salvo',
     };
   }
+
   async listAllExercises(): Promise<
     Promise<ExercisesEntity[]> | Promise<Error>
   > {
@@ -82,6 +83,7 @@ export class ExercisesService {
       },
     });
   }
+
   async remove(id_exercicio: number): Promise<GeneralReturnDTO> {
     this.exerciseRepository
       .findOneBy({ id_exercise: id_exercicio })

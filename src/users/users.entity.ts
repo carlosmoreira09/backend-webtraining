@@ -1,12 +1,6 @@
-import {
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  Timestamp,
-} from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, Timestamp } from 'typeorm';
 import { PaymentStatus } from './userDTO/user.dto';
+
 @Entity({ name: 'users' })
 export class UsersEntity {
   @PrimaryGeneratedColumn()

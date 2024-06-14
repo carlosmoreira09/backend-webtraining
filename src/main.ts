@@ -3,10 +3,7 @@ import { AppModule } from './app.module';
 import helmet from '@fastify/helmet';
 import fastifyCsrfProtection from '@fastify/csrf-protection';
 import secureSession from '@fastify/secure-session';
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
@@ -37,4 +34,5 @@ async function bootstrap() {
   await app.register(fastifyCsrfProtection);
   await app.listen(3000);
 }
+
 bootstrap().then();

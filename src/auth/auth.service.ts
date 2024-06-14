@@ -1,9 +1,4 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
@@ -16,7 +11,8 @@ export class AuthService {
   constructor(
     private userService: UsersService,
     private jwtService: JwtService,
-  ) {}
+  ) {
+  }
 
   async register(data: NewUserDTO): Promise<GeneralReturnDTO> {
     const checkUserExists = await this.userService.validadeUserExist(
@@ -79,6 +75,7 @@ export class AuthService {
       );
     }
   }
+
   generateJWT(payload: any) {
     return this.jwtService.sign(payload);
   }
@@ -88,6 +85,7 @@ export class AuthService {
     delete user.password;
     return user;
   }
+
   async validateContributor(reviewData: any) {
     const review = await this.userService.validadeUserExist(
       reviewData.username,
@@ -102,9 +100,11 @@ export class AuthService {
     }
     return review;
   }
+
   async comparePassword(password: string, hash: string) {
     return await bcrypt.compare(password, hash);
   }
+
   public async validate(token: string): Promise<boolean | never> {
     const decoded = await this.jwtService.verify(token);
     const user: UsersEntity = await this.userService.validadeUserExist(
@@ -115,6 +115,7 @@ export class AuthService {
     }
     return true;
   }
+
   public async decode(token: string): Promise<any> {
     return this.jwtService.decode(token, null);
   }

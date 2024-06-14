@@ -51,4 +51,5 @@ import { PassportModule } from '@nestjs/passport';
     SheetsService,
   ],
 })
-export class SheetsModule {}
+export class SheetsModule {
+}
