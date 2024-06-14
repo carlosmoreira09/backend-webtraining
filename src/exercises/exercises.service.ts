@@ -5,21 +5,23 @@ import { Repository } from 'typeorm';
 import { ExerciseDTO } from './exerciseDTO/exercise.dto';
 import { ClientsService } from '../clients/clients.service';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class ExercisesService {
   constructor(
     @InjectRepository(ExercisesEntity)
     private readonly exerciseRepository: Repository<ExercisesEntity>,
-    private clientService: ClientsService,
+    private userService: UsersService,
   ) {}
   async create(
     newExercise: ExerciseDTO,
     id: number,
   ): Promise<GeneralReturnDTO> {
-    newExercise.id_client = await this.clientService.getClient(id);
+    newExercise.admin = await this.userService.getUserInfo(id);
     const exercise: ExercisesEntity =
       this.exerciseRepository.create(newExercise);
+    console.log(exercise);
     await this.exerciseRepository.save(exercise);
     return {
       status: 201,
