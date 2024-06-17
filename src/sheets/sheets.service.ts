@@ -7,6 +7,7 @@ import { ExercisesService } from '../exercises/exercises.service';
 import { ListSheetsDTO } from './sheetsDTO/listSheetsDTO.dto';
 import { UsersService } from '../users/users.service';
 import { ClientsService } from '../clients/clients.service';
+import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 
 @Injectable()
 export class SheetsService {
@@ -141,7 +142,10 @@ export class SheetsService {
     return sheetToFront;
   }
 
-  async create(newSheet: CreateSheetDTO, id_user: number) {
+  async create(
+    newSheet: CreateSheetDTO,
+    id_user: number,
+  ): Promise<GeneralReturnDTO> {
     try {
       const id_client = newSheet.id_client;
       newSheet.admin = await this.userService.getUserInfo(id_user);
@@ -151,12 +155,19 @@ export class SheetsService {
         );
       }
       const sheet = this.sheetsRepository.create(newSheet);
-      return await this.sheetsRepository.save(sheet);
+      const addSheet = await this.sheetsRepository.save(sheet);
+      if (addSheet.id_client != null) {
+        await this.clientService.saveSheetClient(addSheet.id_sheet, id_client);
+      }
+
+      return {
+        message: 'Planilha Adicionada',
+        status: 200,
+      };
     } catch (error) {
       throw new Error(error);
     }
   }
-
   async delete(id_sheet: number) {
     try {
       this.sheetsRepository

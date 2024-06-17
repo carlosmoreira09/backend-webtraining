@@ -88,6 +88,7 @@ export class ClientsService {
     }
   }
 
+
   async update(updateClient: NewClientDTO) {
     return await this.clientsRepository
       .findOneBy({ email: updateClient.email })
@@ -97,6 +98,20 @@ export class ClientsService {
           updateClient,
         );
       });
+  }
+  async saveSheetClient(id_sheet: number, id_client: number) {
+    try {
+      this.clientsRepository
+        .findOneBy({ id_client: id_client })
+        .then(async (result) => {
+          await this.clientsRepository.update(
+            { id_client: result.id_client },
+            { ids_sheets: id_sheet },
+          );
+        });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   async remove(id: number): Promise<GeneralReturnDTO> {

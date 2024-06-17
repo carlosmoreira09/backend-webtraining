@@ -65,13 +65,9 @@ export class SheetsController {
   async createSheet(
     @Body() newSheet: CreateSheetDTO,
     @Headers('id_user') id_user: number,
-  ) {
+  ): Promise<GeneralReturnDTO> {
     try {
-      await this.sheetsService.create(newSheet, id_user);
-      const returnMessage: GeneralReturnDTO = new GeneralReturnDTO();
-      returnMessage.message = 'Planilha Adicionada';
-      returnMessage.status = 200;
-      return returnMessage;
+      return await this.sheetsService.create(newSheet, id_user);
     } catch (error) {
       throw new HttpException(
         {
