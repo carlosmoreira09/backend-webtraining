@@ -18,8 +18,7 @@ import { ListSheetsDTO } from './sheetsDTO/listSheetsDTO.dto';
 
 @Controller('sheets')
 export class SheetsController {
-  constructor(private readonly sheetsService: SheetsService) {
-  }
+  constructor(private readonly sheetsService: SheetsService) {}
 
   @UseGuards(JwtAuthGuard)
   @Get('client/:id_user')
@@ -63,8 +62,9 @@ export class SheetsController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async createSheet(@Body() newSheet: CreateSheetDTO,
-                    @Headers('id_user') id_user: number,
+  async createSheet(
+    @Body() newSheet: CreateSheetDTO,
+    @Headers('id_user') id_user: number,
   ) {
     try {
       await this.sheetsService.create(newSheet, id_user);

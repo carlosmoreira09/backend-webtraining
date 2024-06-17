@@ -29,14 +29,11 @@ export class SheetsService {
       relations: {
         id_client: true,
       },
-      order: {
-        id_sheet: 'DESC',
-      },
     });
     const listSheetWithExercises: ListSheetsDTO[] = [];
-    const sheetWithExerciseInfo: ListSheetsDTO = new ListSheetsDTO();
 
     for (const sheet of listSheets) {
+      const sheetWithExerciseInfo: ListSheetsDTO = new ListSheetsDTO();
       sheetWithExerciseInfo.id_sheet = sheet.id_sheet;
       sheetWithExerciseInfo.sheet_desc = sheet.sheet_desc;
       sheetWithExerciseInfo.sheet_details = sheet.sheet_details;
@@ -144,9 +141,11 @@ export class SheetsService {
     try {
       const id_client = newSheet.id_client;
       newSheet.admin = await this.userService.getUserInfo(id_user);
-      newSheet.id_client = await this.clientService.getClient(
-        parseInt(id_client),
-      );
+      if (newSheet.id_client != null) {
+        newSheet.id_client = await this.clientService.getClient(
+          parseInt(id_client),
+        );
+      }
       const sheet = this.sheetsRepository.create(newSheet);
       return await this.sheetsRepository.save(sheet);
     } catch (error) {
