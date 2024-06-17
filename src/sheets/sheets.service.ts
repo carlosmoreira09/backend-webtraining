@@ -16,8 +16,7 @@ export class SheetsService {
     private readonly exerciseService: ExercisesService,
     private readonly userService: UsersService,
     private readonly clientService: ClientsService,
-  ) {
-  }
+  ) {}
 
   async listSheets(id_user: number) {
     const listSheets: SheetsEntity[] = await this.sheetsRepository.find({
@@ -53,11 +52,16 @@ export class SheetsService {
       );
       listSheetWithExercises.push(sheetWithExerciseInfo);
     }
+
     return listSheetWithExercises;
   }
 
   async getExerciseInfo(ids: string) {
     const listExercise = [];
+
+    if (ids.length == 0) {
+      return listExercise;
+    }
     const idSheets = ids.split(',');
     for (const id of idSheets) {
       const exercise = await this.exerciseService.getExercise(parseInt(id));
