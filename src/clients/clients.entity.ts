@@ -37,7 +37,7 @@ export class ClientsEntity {
   password: string;
 
   @Column()
-  id_training?: string;
+  training_type?: string;
 
   @Column({
     default: true,
@@ -48,7 +48,7 @@ export class ClientsEntity {
   @Column({
     nullable: true,
   })
-  ids_sheets?: number;
+  id_sheets?: number;
 
   @Column({
     nullable: true,

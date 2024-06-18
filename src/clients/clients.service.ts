@@ -13,8 +13,7 @@ export class ClientsService {
     @InjectRepository(ClientsEntity)
     private readonly clientsRepository: Repository<ClientsEntity>,
     private userService: UsersService,
-  ) {
-  }
+  ) {}
 
   async listAthletesByUser(id_user: number) {
     return await this.clientsRepository.find({
@@ -24,8 +23,8 @@ export class ClientsService {
         age: true,
         email: true,
         phone: true,
-        id_training: true,
-        ids_sheets: true,
+        training_type: true,
+        id_sheets: true,
         old_sheets: true,
         admin: {
           id_user: true,
@@ -88,7 +87,6 @@ export class ClientsService {
     }
   }
 
-
   async update(updateClient: NewClientDTO) {
     return await this.clientsRepository
       .findOneBy({ email: updateClient.email })
@@ -106,7 +104,7 @@ export class ClientsService {
         .then(async (result) => {
           await this.clientsRepository.update(
             { id_client: result.id_client },
-            { ids_sheets: id_sheet },
+            { id_sheets: id_sheet },
           );
         });
     } catch (error) {

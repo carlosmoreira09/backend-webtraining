@@ -91,7 +91,7 @@ export class SheetsService {
           email: true,
           phone: true,
           old_sheets: true,
-          id_training: true,
+          training_type: true,
           age: true,
         },
       },

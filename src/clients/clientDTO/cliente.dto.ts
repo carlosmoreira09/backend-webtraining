@@ -6,8 +6,8 @@ export interface NewClientDTO {
   email: string;
   phone: string;
   password: string;
-  id_training?: string;
-  ids_sheets?: number;
+  training_type?: string;
+  id_sheets?: number;
   old_sheets?: string;
   admin?: UsersEntity;
 }
