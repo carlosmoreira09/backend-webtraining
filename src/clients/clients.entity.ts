@@ -20,35 +20,45 @@ export class ClientsEntity {
     nullable: false,
   })
   fullName: string;
+
   @Column()
   age: number;
+
   @Column({
     unique: true,
     nullable: false,
   })
   email: string;
+
   @Column()
   phone: string;
+
   @Column()
   password: string;
-  @Column({ nullable: true })
-  id_training?: number;
+
+  @Column()
+  id_training?: string;
+
   @Column({
     default: true,
     nullable: true,
   })
   isActive?: boolean;
+
   @Column({
     nullable: true,
   })
   ids_sheets?: number;
+
   @Column({
     nullable: true,
   })
   old_sheets?: string;
+
   @ManyToOne(() => UsersEntity, (users) => users.id_user)
   @JoinColumn()
   admin: UsersEntity;
+
   @Column({
     name: 'updated_at',
     type: 'timestamp',
