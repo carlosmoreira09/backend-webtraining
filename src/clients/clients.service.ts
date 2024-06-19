@@ -69,7 +69,7 @@ export class ClientsService {
       } else {
         clientWithSheet = {
           ...athlete,
-          id_sheets: 'Atleta sem Planilha',
+          id_sheets: null,
         };
       }
 
@@ -123,15 +123,23 @@ export class ClientsService {
     }
   }
 
-  async updateClientSheet(id_client: number, id_sheet: number) {
-    return await this.clientsRepository
+  async updateClientSheet(
+    id_client: number,
+    id_sheet: number,
+  ): Promise<GeneralReturnDTO> {
+    console.log(id_client, id_sheet);
+    await this.clientsRepository
       .findOneBy({ id_client: id_client })
-      .then(async () => {
+      .then(async (value) => {
         await this.clientsRepository.update(
-          { id_client: id_client },
+          { id_client: value.id_client },
           { id_sheets: id_sheet },
         );
       });
+    return {
+      message: 'Cliente Atualizado',
+      status: 200,
+    };
   }
 
   async saveSheetClient(id_sheet: number, id_client: number) {

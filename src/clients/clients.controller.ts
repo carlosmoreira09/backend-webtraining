@@ -14,6 +14,7 @@ import { ClientsService } from './clients.service';
 import { NewClientDTO } from './clientDTO/cliente.dto';
 import { JwtAuthGuard } from '../guards/jwt.guard';
 import { SheetsService } from '../sheets/sheets.service';
+import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 
 @Controller('clients')
 export class ClientsController {
@@ -44,11 +45,11 @@ export class ClientsController {
     }
   }
   @UseGuards(JwtAuthGuard)
-  @Post('sheet/:id_sheet')
+  @Post('sheets/:id_sheet')
   async updateClientSheet(
     @Param('id_sheet') id_sheet: number,
     @Headers('id_client') id_client: number,
-  ) {
+  ): Promise<GeneralReturnDTO> {
     try {
       return await this.clientService.updateClientSheet(id_client, id_sheet);
     } catch (error) {
@@ -85,7 +86,7 @@ export class ClientsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/sheet/:id_sheet')
+  @Get('/sheets/:id_sheet')
   async getSheetByClient(@Param('id_sheet') id_sheet: number) {
     try {
       return await this.sheetService.listSheetById(id_sheet);

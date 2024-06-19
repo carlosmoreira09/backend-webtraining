@@ -18,8 +18,7 @@ export class SheetsService {
     private readonly userService: UsersService,
     @Inject(forwardRef(() => ClientsService))
     private readonly clientService: ClientsService,
-  ) {
-  }
+  ) {}
 
   async listSheets(id_user: number) {
     const listSheets: SheetsEntity[] = await this.sheetsRepository.find({
@@ -151,16 +150,16 @@ export class SheetsService {
     try {
       const id_client = newSheet.id_client;
       newSheet.admin = await this.userService.getUserInfo(id_user);
-       if (newSheet.id_client != null) {
-         newSheet.id_client = await this.clientService.getClient(
-           parseInt(id_client),
-         );
-       }
+      if (newSheet.id_client != null) {
+        newSheet.id_client = await this.clientService.getClient(
+          parseInt(id_client),
+        );
+      }
       const sheet = this.sheetsRepository.create(newSheet);
       const addSheet = await this.sheetsRepository.save(sheet);
-       if (addSheet.id_client != null) {
-         await this.clientService.saveSheetClient(addSheet.id_sheet, id_client);
-       }
+      if (addSheet.id_client != null) {
+        await this.clientService.saveSheetClient(addSheet.id_sheet, id_client);
+      }
 
       return {
         message: 'Planilha Adicionada',

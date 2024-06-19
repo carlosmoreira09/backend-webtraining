@@ -8,7 +8,7 @@ export class ClientModelFront {
   email: string;
   phone: string;
   training_type?: string;
-  id_sheets?: ListSheetsDTO | string;
+  id_sheets?: ListSheetsDTO;
   old_sheets?: string;
   admin?: UsersEntity;
 }
