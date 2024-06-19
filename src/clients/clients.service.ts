@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClientsEntity } from './clients.entity';
 import { Repository } from 'typeorm';
@@ -14,9 +14,11 @@ import { isNumber } from 'class-validator';
 export class ClientsService {
   constructor(
     @InjectRepository(ClientsEntity)
+
     private readonly clientsRepository: Repository<ClientsEntity>,
     private userService: UsersService,
-    private sheetService: SheetsService,
+    @Inject(forwardRef(() => SheetsService))
+    private readonly sheetService: SheetsService,
   ) {}
 
   async listAthletesByUser(id_user: number) {
@@ -52,7 +54,7 @@ export class ClientsService {
       let sheet: ListSheetsDTO;
       let clientWithSheet: ClientModelFront;
       if (isNumber(athlete.id_sheets)) {
-        sheet = await this.sheetService.listSheetById(athlete.id_sheets);
+        sheet = await this.getSheetById(athlete.id_sheets);
       }
       if (sheet) {
         clientWithSheet = {
@@ -70,6 +72,9 @@ export class ClientsService {
     }
 
     return listAthleteToFront;
+  }
+  async getSheetById(id_sheet: number) {
+    return await this.sheetService.listSheetById(id_sheet);
   }
 
   async getClient(id: number) {

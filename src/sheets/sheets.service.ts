@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SheetsEntity } from './sheets.entity';
 import { Repository } from 'typeorm';
@@ -16,6 +16,7 @@ export class SheetsService {
     private readonly sheetsRepository: Repository<SheetsEntity>,
     private readonly exerciseService: ExercisesService,
     private readonly userService: UsersService,
+    @Inject(forwardRef(() => ClientsService))
     private readonly clientService: ClientsService,
   ) {
   }
@@ -103,7 +104,6 @@ export class SheetsService {
         id_client: true,
       },
     });
-    console.log(sheet);
     const listExercisesA = [];
     const listExercisesB = [];
     const listExercisesC = [];

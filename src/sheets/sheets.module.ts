@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { SheetsController } from './sheets.controller';
 import { SheetsService } from './sheets.service';
 import { ExercisesService } from '../exercises/exercises.service';
@@ -16,7 +16,6 @@ import { UsersEntity } from '../users/users.entity';
 import { ExercisesEntity } from '../exercises/exercises.entity';
 import { SheetsEntity } from './sheets.entity';
 import { PassportModule } from '@nestjs/passport';
-
 @Module({
   imports: [
     ConfigModule.forRoot(),
