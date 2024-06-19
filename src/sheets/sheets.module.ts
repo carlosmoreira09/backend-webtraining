@@ -48,7 +48,6 @@ import { PassportModule } from '@nestjs/passport';
     ExercisesService,
     ClientsService,
     SheetsService,
-    JwtService,
   ],
 })
 export class SheetsModule {

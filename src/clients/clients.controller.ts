@@ -47,7 +47,7 @@ export class ClientsController {
   @Post('sheet/:id_sheet')
   async updateClientSheet(
     @Param('id_sheet') id_sheet: number,
-    @Headers('id_user') id_client: number,
+    @Headers('id_client') id_client: number,
   ) {
     try {
       return await this.clientService.updateClientSheet(id_client, id_sheet);
