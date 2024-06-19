@@ -1,23 +1,30 @@
 import { Module } from '@nestjs/common';
-import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ClientsEntity } from '../clients/clients.entity';
-import { UsersEntity } from '../users/users.entity';
 import { LocalStrategy } from '../guards/local-strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from '../guards/jwt-strategy';
 import { ClientsService } from '../clients/clients.service';
-import { ExercisesEntity } from './exercises.entity';
 import { ExercisesController } from './exercises.controller';
 import { AuthService } from '../auth/auth.service';
 import { ExercisesService } from './exercises.service';
+import { JwtModule } from '@nestjs/jwt';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ClientsEntity } from '../clients/clients.entity';
+import { UsersEntity } from '../users/users.entity';
+import { ExercisesEntity } from './exercises.entity';
+import { PassportModule } from '@nestjs/passport';
+import { SheetsEntity } from '../sheets/sheets.entity';
+import { SheetsService } from '../sheets/sheets.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forFeature([ClientsEntity, UsersEntity, ExercisesEntity]),
+    TypeOrmModule.forFeature([
+      ClientsEntity,
+      UsersEntity,
+      ExercisesEntity,
+      SheetsEntity,
+    ]),
     PassportModule.register({
       defaultStrategy: process.env.DEFAULT_STRATEGY,
       property: process.env.DEFAULT_USER,
@@ -39,6 +46,7 @@ import { ExercisesService } from './exercises.service';
     ConfigService,
     ExercisesService,
     ClientsService,
+    SheetsService,
   ],
 })
 export class ExercisesModule {

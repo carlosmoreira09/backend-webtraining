@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
@@ -13,11 +13,13 @@ import { JwtStrategy } from '../guards/jwt-strategy';
 import { ExercisesService } from '../exercises/exercises.service';
 import { ExercisesEntity } from '../exercises/exercises.entity';
 import { ClientsService } from '../clients/clients.service';
+import { SheetsEntity } from '../sheets/sheets.entity';
+import { SheetsService } from '../sheets/sheets.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forFeature([ClientsEntity, UsersEntity, ExercisesEntity]),
+    TypeOrmModule.forFeature([ClientsEntity, UsersEntity, ExercisesEntity, SheetsEntity]),
     PassportModule.register({
       defaultStrategy: process.env.DEFAULT_STRATEGY,
       property: process.env.DEFAULT_USER,
@@ -39,6 +41,7 @@ import { ClientsService } from '../clients/clients.service';
     ConfigService,
     ExercisesService,
     ClientsService,
+    SheetsService,
   ],
 })
 export class AuthModule {

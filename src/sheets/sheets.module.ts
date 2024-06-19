@@ -1,31 +1,25 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { SheetsEntity } from './sheets.entity';
 import { SheetsController } from './sheets.controller';
 import { SheetsService } from './sheets.service';
 import { ExercisesService } from '../exercises/exercises.service';
 import { ClientsService } from '../clients/clients.service';
-import { ExercisesEntity } from '../exercises/exercises.entity';
-import { ClientsEntity } from '../clients/clients.entity';
-import { UsersEntity } from '../users/users.entity';
 import { UsersService } from '../users/users.service';
-import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from '../auth/auth.module';
 import { AuthService } from '../auth/auth.service';
 import { LocalStrategy } from '../guards/local-strategy';
 import { JwtStrategy } from '../guards/jwt-strategy';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ClientsEntity } from '../clients/clients.entity';
+import { UsersEntity } from '../users/users.entity';
+import { ExercisesEntity } from '../exercises/exercises.entity';
+import { SheetsEntity } from './sheets.entity';
 import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forFeature([
-      ClientsEntity,
-      UsersEntity,
-      ExercisesEntity,
-      SheetsEntity,
-    ]),
     PassportModule.register({
       defaultStrategy: process.env.DEFAULT_STRATEGY,
       property: process.env.DEFAULT_USER,
@@ -37,6 +31,12 @@ import { PassportModule } from '@nestjs/passport';
         expiresIn: parseInt(process.env.JWT_EXPIRES_IN),
       },
     }),
+    TypeOrmModule.forFeature([
+      ClientsEntity,
+      UsersEntity,
+      ExercisesEntity,
+      SheetsEntity,
+    ]),
     AuthModule,
   ],
   controllers: [SheetsController],
@@ -49,6 +49,7 @@ import { PassportModule } from '@nestjs/passport';
     ExercisesService,
     ClientsService,
     SheetsService,
+    JwtService,
   ],
 })
 export class SheetsModule {

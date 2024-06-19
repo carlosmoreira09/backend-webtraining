@@ -2,10 +2,13 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClientsEntity } from './clients.entity';
 import { Repository } from 'typeorm';
-import { NewClientDTO } from './clientDTO/cliente.dto';
+import { ClientModelFront, NewClientDTO } from './clientDTO/cliente.dto';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
+import { SheetsService } from '../sheets/sheets.service';
+import { ListSheetsDTO } from '../sheets/sheetsDTO/listSheetsDTO.dto';
+import { isNumber } from 'class-validator';
 
 @Injectable()
 export class ClientsService {
@@ -13,10 +16,11 @@ export class ClientsService {
     @InjectRepository(ClientsEntity)
     private readonly clientsRepository: Repository<ClientsEntity>,
     private userService: UsersService,
+    private sheetService: SheetsService,
   ) {}
 
   async listAthletesByUser(id_user: number) {
-    return await this.clientsRepository.find({
+    const listAthlete: ClientsEntity[] = await this.clientsRepository.find({
       select: {
         id_client: true,
         fullName: true,
@@ -35,7 +39,6 @@ export class ClientsService {
       },
       where: {
         isActive: true,
-        deletedAt: null,
         admin: {
           id_user: id_user,
         },
@@ -44,6 +47,29 @@ export class ClientsService {
         admin: true,
       },
     });
+    const listAthleteToFront: ClientModelFront[] = [];
+    for (const athlete of listAthlete) {
+      let sheet: ListSheetsDTO;
+      let clientWithSheet: ClientModelFront;
+      if (isNumber(athlete.id_sheets)) {
+        sheet = await this.sheetService.listSheetById(athlete.id_sheets);
+      }
+      if (sheet) {
+        clientWithSheet = {
+          ...athlete,
+          id_sheets: sheet,
+        };
+      } else {
+        clientWithSheet = {
+          ...athlete,
+          id_sheets: 'Atleta sem Planilha',
+        };
+      }
+
+      listAthleteToFront.push(clientWithSheet);
+    }
+
+    return listAthleteToFront;
   }
 
   async getClient(id: number) {
@@ -97,6 +123,7 @@ export class ClientsService {
         );
       });
   }
+
   async saveSheetClient(id_sheet: number, id_client: number) {
     try {
       this.clientsRepository

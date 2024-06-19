@@ -97,8 +97,12 @@ export class ExercisesService {
   }
 
   async getExercise(id: number) {
-    return await this.exerciseRepository.findOneBy({
+    const exercise = await this.exerciseRepository.findOneBy({
       id_exercise: id,
     });
+    if (!exercise) {
+      return undefined;
+    }
+    return exercise;
   }
 }

@@ -1,7 +1,7 @@
 import { ExercisesEntity } from '../../exercises/exercises.entity';
 
 export class ListSheetsDTO {
-  id_sheet: number;
+  id_sheet: any;
   sheet_name: string;
   sheet_desc: string;
   sheet_details: string;

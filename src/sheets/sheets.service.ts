@@ -6,8 +6,8 @@ import { CreateSheetDTO } from './sheetsDTO/createSheetDTO.dto';
 import { ExercisesService } from '../exercises/exercises.service';
 import { ListSheetsDTO } from './sheetsDTO/listSheetsDTO.dto';
 import { UsersService } from '../users/users.service';
-import { ClientsService } from '../clients/clients.service';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
+import { ClientsService } from '../clients/clients.service';
 
 @Injectable()
 export class SheetsService {
@@ -17,7 +17,8 @@ export class SheetsService {
     private readonly exerciseService: ExercisesService,
     private readonly userService: UsersService,
     private readonly clientService: ClientsService,
-  ) {}
+  ) {
+  }
 
   async listSheets(id_user: number) {
     const listSheets: SheetsEntity[] = await this.sheetsRepository.find({
@@ -102,33 +103,34 @@ export class SheetsService {
         id_client: true,
       },
     });
+    console.log(sheet);
     const listExercisesA = [];
     const listExercisesB = [];
     const listExercisesC = [];
     const listExercisesD = [];
     for (const id of sheet.training_a.split(',')) {
-      const exercisesDetails = await this.exerciseService.getExercise(
-        parseInt(id),
-      );
-      listExercisesA.push(exercisesDetails);
+      const exercisesDetails = await this.getExerciseInfo(id);
+      if (exercisesDetails !== undefined) {
+        listExercisesA.push(exercisesDetails);
+      }
     }
     for (const id of sheet.training_b.split(',')) {
-      const exercisesDetails = await this.exerciseService.getExercise(
-        parseInt(id),
-      );
-      listExercisesB.push(exercisesDetails);
+      const exercisesDetails = await this.getExerciseInfo(id);
+      if (exercisesDetails !== undefined) {
+        listExercisesB.push(exercisesDetails);
+      }
     }
     for (const id of sheet.training_c.split(',')) {
-      const exercisesDetails = await this.exerciseService.getExercise(
-        parseInt(id),
-      );
-      listExercisesC.push(exercisesDetails);
+      const exercisesDetails = await this.getExerciseInfo(id);
+      if (exercisesDetails !== undefined) {
+        listExercisesC.push(exercisesDetails);
+      }
     }
     for (const id of sheet.training_d.split(',')) {
-      const exercisesDetails = await this.exerciseService.getExercise(
-        parseInt(id),
-      );
-      listExercisesD.push(exercisesDetails);
+      const exercisesDetails = await this.getExerciseInfo(id);
+      if (exercisesDetails !== undefined) {
+        listExercisesD.push(exercisesDetails);
+      }
     }
     sheetToFront.training_a = listExercisesA;
     sheetToFront.training_b = listExercisesB;
@@ -149,16 +151,16 @@ export class SheetsService {
     try {
       const id_client = newSheet.id_client;
       newSheet.admin = await this.userService.getUserInfo(id_user);
-      if (newSheet.id_client != null) {
-        newSheet.id_client = await this.clientService.getClient(
-          parseInt(id_client),
-        );
-      }
+       if (newSheet.id_client != null) {
+         newSheet.id_client = await this.clientService.getClient(
+           parseInt(id_client),
+         );
+       }
       const sheet = this.sheetsRepository.create(newSheet);
       const addSheet = await this.sheetsRepository.save(sheet);
-      if (addSheet.id_client != null) {
-        await this.clientService.saveSheetClient(addSheet.id_sheet, id_client);
-      }
+       if (addSheet.id_client != null) {
+         await this.clientService.saveSheetClient(addSheet.id_sheet, id_client);
+       }
 
       return {
         message: 'Planilha Adicionada',
@@ -168,6 +170,7 @@ export class SheetsService {
       throw new Error(error);
     }
   }
+
   async delete(id_sheet: number) {
     try {
       this.sheetsRepository

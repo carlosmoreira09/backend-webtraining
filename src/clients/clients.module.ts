@@ -1,20 +1,20 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ClientsEntity } from './clients.entity';
 import { ClientsController } from './clients.controller';
 import { ClientsService } from './clients.service';
-import { UsersEntity } from '../users/users.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from '../auth/auth.service';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from '../guards/jwt-strategy';
 import { LocalStrategy } from '../guards/local-strategy';
-import { PassportModule } from '@nestjs/passport';
-import { ExercisesEntity } from '../exercises/exercises.entity';
 import { ExercisesService } from '../exercises/exercises.service';
-import { SheetsEntity } from '../sheets/sheets.entity';
 import { SheetsService } from '../sheets/sheets.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ClientsEntity } from './clients.entity';
+import { UsersEntity } from '../users/users.entity';
+import { ExercisesEntity } from '../exercises/exercises.entity';
+import { SheetsEntity } from '../sheets/sheets.entity';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -49,5 +49,4 @@ import { SheetsService } from '../sheets/sheets.service';
     SheetsService,
   ],
 })
-export class ClientsModule {
-}
+export class ClientsModule {}
