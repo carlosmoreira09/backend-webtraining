@@ -1,4 +1,10 @@
-import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClientsEntity } from './clients.entity';
 import { Repository } from 'typeorm';
@@ -14,7 +20,6 @@ import { isNumber } from 'class-validator';
 export class ClientsService {
   constructor(
     @InjectRepository(ClientsEntity)
-
     private readonly clientsRepository: Repository<ClientsEntity>,
     private userService: UsersService,
     @Inject(forwardRef(() => SheetsService))
@@ -118,13 +123,13 @@ export class ClientsService {
     }
   }
 
-  async update(updateClient: NewClientDTO) {
+  async updateClientSheet(id_client: number, id_sheet: number) {
     return await this.clientsRepository
-      .findOneBy({ email: updateClient.email })
-      .then(async (result) => {
+      .findOneBy({ id_client: id_client })
+      .then(async () => {
         await this.clientsRepository.update(
-          { email: result.email },
-          updateClient,
+          { id_client: id_client },
+          { id_sheets: id_sheet },
         );
       });
   }

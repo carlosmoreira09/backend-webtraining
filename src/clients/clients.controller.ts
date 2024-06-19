@@ -20,8 +20,7 @@ export class ClientsController {
   constructor(
     private readonly clientService: ClientsService,
     private readonly sheetService: SheetsService,
-  ) {
-  }
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -36,6 +35,27 @@ export class ClientsController {
         {
           statusCode: HttpStatus.CONFLICT,
           error: 'Dados Inválidos',
+        },
+        HttpStatus.CONFLICT,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
+  @UseGuards(JwtAuthGuard)
+  @Post('sheet/:id_sheet')
+  async updateClientSheet(
+    @Param('id_sheet') id_sheet: number,
+    @Headers('id_user') id_client: number,
+  ) {
+    try {
+      return await this.clientService.updateClientSheet(id_client, id_sheet);
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.CONFLICT,
+          error: 'Erro ao listar cliente',
         },
         HttpStatus.CONFLICT,
         {
