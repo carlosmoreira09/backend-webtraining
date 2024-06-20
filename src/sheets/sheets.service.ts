@@ -8,6 +8,7 @@ import { ListSheetsDTO } from './sheetsDTO/listSheetsDTO.dto';
 import { UsersService } from '../users/users.service';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 import { ClientsService } from '../clients/clients.service';
+import { ExercisesEntity } from '../exercises/exercises.entity';
 
 @Injectable()
 export class SheetsService {
@@ -34,32 +35,36 @@ export class SheetsService {
     const listSheetWithExercises: ListSheetsDTO[] = [];
 
     for (const sheet of listSheets) {
-      const sheetWithExerciseInfo: ListSheetsDTO = new ListSheetsDTO();
-      sheetWithExerciseInfo.id_sheet = sheet.id_sheet;
-      sheetWithExerciseInfo.sheet_desc = sheet.sheet_desc;
-      sheetWithExerciseInfo.sheet_details = sheet.sheet_details;
-      sheetWithExerciseInfo.sheet_name = sheet.sheet_name;
-      sheetWithExerciseInfo.id_client = sheet.id_client;
-      sheetWithExerciseInfo.training_a = await this.getExerciseInfo(
+      let sheetWithExerciseInfo: ListSheetsDTO;
+
+      const trainingA: ExercisesEntity[] = await this.getExerciseInfo(
         sheet.training_a,
       );
-      sheetWithExerciseInfo.training_b = await this.getExerciseInfo(
+      const trainingB: ExercisesEntity[] = await this.getExerciseInfo(
         sheet.training_b,
       );
-      sheetWithExerciseInfo.training_c = await this.getExerciseInfo(
+      const trainingC: ExercisesEntity[] = await this.getExerciseInfo(
         sheet.training_c,
       );
-      sheetWithExerciseInfo.training_d = await this.getExerciseInfo(
+      const trainingD: ExercisesEntity[] = await this.getExerciseInfo(
         sheet.training_d,
       );
+      // eslint-disable-next-line prefer-const
+      sheetWithExerciseInfo = {
+        ...sheet,
+        training_a: trainingA,
+        training_b: trainingB,
+        training_c: trainingC,
+        training_d: trainingD,
+      };
       listSheetWithExercises.push(sheetWithExerciseInfo);
     }
 
     return listSheetWithExercises;
   }
 
-  async getExerciseInfo(ids: string) {
-    const listExercise = [];
+  async getExerciseInfo(ids: string): Promise<ExercisesEntity[]> {
+    const listExercise: ExercisesEntity[] = [];
 
     if (ids.length == 0) {
       return listExercise;
@@ -75,7 +80,7 @@ export class SheetsService {
   }
 
   async listSheetById(id_sheet: number): Promise<ListSheetsDTO> {
-    const sheetToFront: ListSheetsDTO = new ListSheetsDTO();
+    let sheetToFront: ListSheetsDTO;
     const sheet = await this.sheetsRepository.findOne({
       select: {
         id_sheet: true,
@@ -103,43 +108,28 @@ export class SheetsService {
         id_client: true,
       },
     });
-    const listExercisesA = [];
-    const listExercisesB = [];
-    const listExercisesC = [];
-    const listExercisesD = [];
-    for (const id of sheet.training_a.split(',')) {
-      const exercisesDetails = await this.getExerciseInfo(id);
-      if (exercisesDetails !== undefined) {
-        listExercisesA.push(exercisesDetails);
-      }
-    }
-    for (const id of sheet.training_b.split(',')) {
-      const exercisesDetails = await this.getExerciseInfo(id);
-      if (exercisesDetails !== undefined) {
-        listExercisesB.push(exercisesDetails);
-      }
-    }
-    for (const id of sheet.training_c.split(',')) {
-      const exercisesDetails = await this.getExerciseInfo(id);
-      if (exercisesDetails !== undefined) {
-        listExercisesC.push(exercisesDetails);
-      }
-    }
-    for (const id of sheet.training_d.split(',')) {
-      const exercisesDetails = await this.getExerciseInfo(id);
-      if (exercisesDetails !== undefined) {
-        listExercisesD.push(exercisesDetails);
-      }
-    }
-    sheetToFront.training_a = listExercisesA;
-    sheetToFront.training_b = listExercisesB;
-    sheetToFront.training_c = listExercisesC;
-    sheetToFront.training_d = listExercisesD;
-    sheetToFront.sheet_desc = sheet.sheet_desc;
-    sheetToFront.sheet_details = sheet.sheet_details;
-    sheetToFront.sheet_name = sheet.sheet_name;
-    sheetToFront.id_sheet = sheet.id_sheet;
-    sheetToFront.id_client = sheet.id_client;
+    const trainingA: ExercisesEntity[] = await this.getExerciseInfo(
+      sheet.training_a,
+    );
+    const trainingB: ExercisesEntity[] = await this.getExerciseInfo(
+      sheet.training_b,
+    );
+    const trainingC: ExercisesEntity[] = await this.getExerciseInfo(
+      sheet.training_c,
+    );
+    const trainingD: ExercisesEntity[] = await this.getExerciseInfo(
+      sheet.training_d,
+    );
+
+    // eslint-disable-next-line prefer-const
+    sheetToFront = {
+      ...sheet,
+      training_a: trainingA,
+      training_b: trainingB,
+      training_c: trainingC,
+      training_d: trainingD,
+    };
+
     return sheetToFront;
   }
 
