@@ -21,7 +21,6 @@ export class ExercisesService {
     newExercise.admin = await this.userService.getUserInfo(id);
     const exercise: ExercisesEntity =
       this.exerciseRepository.create(newExercise);
-    console.log(exercise);
     await this.exerciseRepository.save(exercise);
     return {
       status: 201,

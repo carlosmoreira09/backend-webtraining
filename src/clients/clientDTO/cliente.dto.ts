@@ -14,11 +14,12 @@ export class ClientModelFront {
 }
 
 export interface NewClientDTO {
+  id_client?: number;
   fullName: string;
   age: number;
   email: string;
   phone: string;
-  password: string;
+  password?: string;
   training_type?: string;
   id_sheets?: number;
   old_sheets?: string;

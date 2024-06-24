@@ -7,7 +7,7 @@ import {
   HttpException,
   HttpStatus,
   Param,
-  Post,
+  Post, Put,
   UseGuards,
 } from '@nestjs/common';
 import { ClientsService } from './clients.service';
@@ -56,7 +56,27 @@ export class ClientsController {
       throw new HttpException(
         {
           statusCode: HttpStatus.CONFLICT,
-          error: 'Erro ao listar cliente',
+          error: 'Erro ao salvar planilha',
+        },
+        HttpStatus.CONFLICT,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
+  @UseGuards(JwtAuthGuard)
+  @Put()
+  async updateClientData(
+    @Body() updateClient: NewClientDTO,
+  ): Promise<GeneralReturnDTO> {
+    try {
+      return await this.clientService.updateClient(updateClient);
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.CONFLICT,
+          error: 'Erro ao  Atualizados Dados',
         },
         HttpStatus.CONFLICT,
         {
@@ -75,7 +95,7 @@ export class ClientsController {
       throw new HttpException(
         {
           statusCode: HttpStatus.CONFLICT,
-          error: 'Erro ao listar cliente',
+          error: 'Erro ao listar Atletas',
         },
         HttpStatus.CONFLICT,
         {
@@ -94,7 +114,7 @@ export class ClientsController {
       throw new HttpException(
         {
           statusCode: HttpStatus.CONFLICT,
-          error: 'Erro ao listar cliente',
+          error: 'Erro ao Acessar Planilha do Cliente',
         },
         HttpStatus.CONFLICT,
         {

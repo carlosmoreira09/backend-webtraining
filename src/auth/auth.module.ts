@@ -19,7 +19,12 @@ import { SheetsService } from '../sheets/sheets.service';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forFeature([ClientsEntity, UsersEntity, ExercisesEntity, SheetsEntity]),
+    TypeOrmModule.forFeature([
+      ClientsEntity,
+      UsersEntity,
+      ExercisesEntity,
+      SheetsEntity,
+    ]),
     PassportModule.register({
       defaultStrategy: process.env.DEFAULT_STRATEGY,
       property: process.env.DEFAULT_USER,
@@ -44,5 +49,4 @@ import { SheetsService } from '../sheets/sheets.service';
     SheetsService,
   ],
 })
-export class AuthModule {
-}
+export class AuthModule {}

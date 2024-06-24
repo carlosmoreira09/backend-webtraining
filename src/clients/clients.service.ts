@@ -14,7 +14,6 @@ import * as bcrypt from 'bcrypt';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 import { SheetsService } from '../sheets/sheets.service';
 import { ListSheetsDTO } from '../sheets/sheetsDTO/listSheetsDTO.dto';
-import { isNumber } from 'class-validator';
 
 @Injectable()
 export class ClientsService {
@@ -58,10 +57,10 @@ export class ClientsService {
     for (const athlete of listAthlete) {
       let sheet: ListSheetsDTO;
       let clientWithSheet: ClientModelFront;
-      if (isNumber(athlete.id_sheets)) {
+      if (athlete.id_sheets) {
         sheet = await this.getSheetById(athlete.id_sheets);
       }
-      if (sheet) {
+      if (sheet !== undefined) {
         clientWithSheet = {
           ...athlete,
           id_sheets: sheet,
@@ -90,6 +89,34 @@ export class ClientsService {
     });
   }
 
+  async updateClient(updateClient: NewClientDTO) {
+
+    await this.clientsRepository
+      .findOne({
+        where: {
+          id_client: updateClient.id_client,
+        },
+      })
+      .then(async (value) => {
+        await this.clientsRepository.update(
+          {
+            id_client: value.id_client,
+          },
+          {
+            fullName: updateClient.fullName,
+            age: updateClient.age,
+            training_type: updateClient.training_type,
+            email: updateClient.email,
+            phone: updateClient.phone,
+          },
+        );
+      });
+    return {
+      message: 'Dados Atualizados',
+      status: 200,
+    };
+  }
+
   async validadeUserExist(user: string) {
     return await this.clientsRepository.findOne({
       where: {
@@ -114,7 +141,6 @@ export class ClientsService {
     const newUser: NewClientDTO = { ...newClient, password: newPassword };
     const createUser = this.clientsRepository.create(newUser);
     const user = await this.clientsRepository.save(createUser);
-    console.log(user);
     if (user) {
       return {
         status: 200,
@@ -127,7 +153,6 @@ export class ClientsService {
     id_client: number,
     id_sheet: number,
   ): Promise<GeneralReturnDTO> {
-    console.log(id_client, id_sheet);
     await this.clientsRepository
       .findOneBy({ id_client: id_client })
       .then(async (value) => {
