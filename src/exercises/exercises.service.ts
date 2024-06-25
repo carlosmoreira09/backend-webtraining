@@ -23,34 +23,28 @@ export class ExercisesService {
       this.exerciseRepository.create(newExercise);
     await this.exerciseRepository.save(exercise);
     return {
-      status: 201,
+      status: 200,
       message: 'Exercício Salvo',
     };
   }
 
-  async listAllExercises(): Promise<
-    Promise<ExercisesEntity[]> | Promise<Error>
-  > {
-    try {
-      return await this.exerciseRepository.find({
-        select: {
-          admin: {
-            id_user: true,
-            fullName: true,
-            username: true,
-            email: true,
-          },
+  async listAllExercises(): Promise<ExercisesEntity[]> {
+    return await this.exerciseRepository.find({
+      select: {
+        admin: {
+          id_user: true,
+          fullName: true,
+          username: true,
+          email: true,
         },
-        relations: {
-          admin: true,
-        },
-        order: {
-          id_exercise: 'DESC',
-        },
-      });
-    } catch (error) {
-      return new Error();
-    }
+      },
+      relations: {
+        admin: true,
+      },
+      order: {
+        id_exercise: 'DESC',
+      },
+    });
   }
 
   async listExerciseByType(
@@ -94,7 +88,26 @@ export class ExercisesService {
       message: 'Exercise removido',
     };
   }
-
+  async updateExercise(updateExercise: ExerciseDTO) {
+    this.exerciseRepository
+      .findOne({
+        where: {
+          id_exercise: updateExercise.id_exercise,
+        },
+      })
+      .then(async (result) => {
+        await this.exerciseRepository.update(
+          {
+            id_exercise: result.id_exercise,
+          },
+          updateExercise,
+        );
+      });
+    return {
+      status: 200,
+      message: 'Exercicio Alterado',
+    };
+  }
   async getExercise(id: number) {
     const exercise = await this.exerciseRepository.findOneBy({
       id_exercise: id,

@@ -1,4 +1,10 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { UsersEntity } from '../users/users.entity';
 
 @Entity({ name: 'exercises' })
@@ -21,7 +27,4 @@ export class ExercisesEntity {
 
   @Column()
   exercise_type: string;
-
-  @Column()
-  training_type: string;
 }

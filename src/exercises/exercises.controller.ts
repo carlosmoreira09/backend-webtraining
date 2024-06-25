@@ -7,7 +7,7 @@ import {
   HttpException,
   HttpStatus,
   Param,
-  Post,
+  Post, Put,
   UseGuards,
 } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
@@ -61,6 +61,27 @@ export class ExercisesController {
         {
           statusCode: HttpStatus.BAD_REQUEST,
           error: 'Erro ao Adicionar exercicio',
+        },
+        HttpStatus.BAD_REQUEST,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put()
+  async updateExercise(
+    @Body() updateExercise: ExerciseDTO,
+  ): Promise<GeneralReturnDTO> {
+    try {
+      return await this.exerciseService.updateExercise(updateExercise);
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          error: 'Erro ao Alterar exercicio',
         },
         HttpStatus.BAD_REQUEST,
         {

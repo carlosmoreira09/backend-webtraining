@@ -1,16 +1,10 @@
-import { IsString } from 'class-validator';
 import { UsersEntity } from '../../users/users.entity';
 
-export class ExerciseDTO {
-  @IsString()
+export interface ExerciseDTO {
+  id_exercise?: number;
   exercise: string;
-  @IsString()
   exercise_desc: string;
-  @IsString()
   exercise_type: string;
-  @IsString()
-  training_type: string;
-  @IsString()
   repetition: string;
   admin?: UsersEntity;
 }
