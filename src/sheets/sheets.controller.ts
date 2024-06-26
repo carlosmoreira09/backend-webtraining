@@ -18,8 +18,7 @@ import { ListSheetsDTO } from './sheetsDTO/listSheetsDTO.dto';
 
 @Controller('sheets')
 export class SheetsController {
-  constructor(private readonly sheetsService: SheetsService) {
-  }
+  constructor(private readonly sheetsService: SheetsService) {}
 
   @UseGuards(JwtAuthGuard)
   @Get('client/:id_user')
@@ -85,13 +84,9 @@ export class SheetsController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id_sheet')
-  async deleteSHeet(@Param('id_sheet') id_sheet: number) {
+  async deleteSHeet(@Param('id_sheet') id_sheet: number): Promise<GeneralReturnDTO> {
     try {
-      await this.sheetsService.delete(id_sheet);
-      const returnMessage: GeneralReturnDTO = new GeneralReturnDTO();
-      returnMessage.message = 'Planilha Deletada';
-      returnMessage.status = 200;
-      return returnMessage;
+      return await this.sheetsService.delete(id_sheet);
     } catch (error) {
       throw new HttpException(
         {

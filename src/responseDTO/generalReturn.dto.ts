@@ -1,8 +1,5 @@
-import { IsInt, IsString } from 'class-validator';
-
-export class GeneralReturnDTO {
-  @IsString()
+export interface GeneralReturnDTO {
   message?: string;
-  @IsInt()
   status?: number;
+  id?: any;
 }

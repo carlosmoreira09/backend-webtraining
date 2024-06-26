@@ -133,10 +133,7 @@ export class SheetsService {
     return sheetToFront;
   }
 
-  async create(
-    newSheet: CreateSheetDTO,
-    id_user: number,
-  ): Promise<GeneralReturnDTO> {
+  async create(newSheet: CreateSheetDTO, id_user: number): Promise<any> {
     try {
       const id_client = newSheet.id_client;
       newSheet.admin = await this.userService.getUserInfo(id_user);
@@ -154,24 +151,25 @@ export class SheetsService {
       return {
         message: 'Planilha Adicionada',
         status: 200,
+        id: addSheet.id_sheet,
       };
     } catch (error) {
       throw new Error(error);
     }
   }
 
-  async delete(id_sheet: number) {
-    try {
-      this.sheetsRepository
-        .findOneBy({ id_sheet: id_sheet })
-        .then(async (result) => {
-          await this.sheetsRepository.update(
-            { id_sheet: result.id_sheet },
-            { deletedAt: new Date().toISOString() },
-          );
-        });
-    } catch (error) {
-      throw new Error(error);
-    }
+  async delete(id_sheet: number): Promise<GeneralReturnDTO> {
+    await this.sheetsRepository
+      .findOneBy({ id_sheet: id_sheet })
+      .then(async (result) => {
+        await this.sheetsRepository.update(
+          { id_sheet: result.id_sheet },
+          { deletedAt: new Date().toISOString() },
+        );
+      });
+    return {
+      status: 200,
+      message: 'Planilha Deletada',
+    };
   }
 }
