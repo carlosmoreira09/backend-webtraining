@@ -8,6 +8,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { SheetsService } from './sheets.service';
@@ -81,10 +82,32 @@ export class SheetsController {
       );
     }
   }
+  @UseGuards(JwtAuthGuard)
+  @Put()
+  async updateSheet(
+    @Body() updateSheet: CreateSheetDTO,
+  ): Promise<GeneralReturnDTO> {
+    try {
+      return await this.sheetsService.updateSheet(updateSheet);
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          error: 'Erro ao Criar Planilha',
+        },
+        HttpStatus.BAD_REQUEST,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id_sheet')
-  async deleteSHeet(@Param('id_sheet') id_sheet: number): Promise<GeneralReturnDTO> {
+  async deleteSHeet(
+    @Param('id_sheet') id_sheet: number,
+  ): Promise<GeneralReturnDTO> {
     try {
       return await this.sheetsService.delete(id_sheet);
     } catch (error) {

@@ -1,6 +1,7 @@
 import { UsersEntity } from '../../users/users.entity';
 
 export interface CreateSheetDTO {
+  id_sheet?: number;
   sheet_name: string;
   sheet_desc: string;
   sheet_details: string;

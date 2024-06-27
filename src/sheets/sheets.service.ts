@@ -62,6 +62,20 @@ export class SheetsService {
 
     return listSheetWithExercises;
   }
+  async updateSheet(updateSheet: CreateSheetDTO) {
+    await this.sheetsRepository
+      .findOneBy({ id_sheet: updateSheet.id_sheet })
+      .then(async (result) => {
+        await this.sheetsRepository.update(
+          { id_sheet: result.id_sheet },
+          updateSheet,
+        );
+      });
+    return {
+      message: 'Planilha Atualizada',
+      status: 200,
+    };
+  }
 
   async getExerciseInfo(ids: string): Promise<ExercisesEntity[]> {
     const listExercise: ExercisesEntity[] = [];
