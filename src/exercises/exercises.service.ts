@@ -89,7 +89,7 @@ export class ExercisesService {
     };
   }
   async updateExercise(updateExercise: ExerciseDTO) {
-    this.exerciseRepository
+    const teste = await this.exerciseRepository
       .findOne({
         where: {
           id_exercise: updateExercise.id_exercise,

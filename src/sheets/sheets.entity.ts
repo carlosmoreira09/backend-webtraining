@@ -33,4 +33,11 @@ export class SheetsEntity {
   @ManyToOne(() => UsersEntity, (users) => users.id_user)
   @JoinColumn()
   admin: UsersEntity;
+
+  @Column({
+    name: 'updated_at',
+    type: 'timestamp',
+    default: () => 'current_timestamp',
+  })
+  updatedAt?: Timestamp;
 }

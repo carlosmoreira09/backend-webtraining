@@ -63,11 +63,17 @@ export class SheetsService {
     return listSheetWithExercises;
   }
   async updateSheet(updateSheet: CreateSheetDTO) {
-    await this.sheetsRepository
-      .findOneBy({ id_sheet: updateSheet.id_sheet })
+    const teste = await this.sheetsRepository
+      .findOne({
+        where: {
+          id_sheet: updateSheet.id_sheet,
+        },
+      })
       .then(async (result) => {
         await this.sheetsRepository.update(
-          { id_sheet: result.id_sheet },
+          {
+            id_sheet: result.id_sheet,
+          },
           updateSheet,
         );
       });

@@ -30,7 +30,7 @@ export class SheetsController {
       throw new HttpException(
         {
           statusCode: HttpStatus.BAD_REQUEST,
-          error: 'Erro ao Listar',
+          error: 'Erro ao Listar Planilhas',
         },
         HttpStatus.BAD_REQUEST,
         {
@@ -51,7 +51,7 @@ export class SheetsController {
       throw new HttpException(
         {
           statusCode: HttpStatus.BAD_REQUEST,
-          error: 'Erro ao Listar',
+          error: 'Erro ao Listar Planilha',
         },
         HttpStatus.BAD_REQUEST,
         {
@@ -93,7 +93,7 @@ export class SheetsController {
       throw new HttpException(
         {
           statusCode: HttpStatus.BAD_REQUEST,
-          error: 'Erro ao Criar Planilha',
+          error: 'Erro ao Atualizar Planilha',
         },
         HttpStatus.BAD_REQUEST,
         {
