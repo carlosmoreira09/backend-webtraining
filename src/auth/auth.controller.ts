@@ -25,6 +25,7 @@ export class AuthController {
     @Body() data: NewUserDTO,
     @Headers('user_role') user_role: string,
   ): Promise<Promise<GeneralReturnDTO> | HttpException> {
+    console.log(user_role);
     if (user_role && user_role == 'admin') {
       console.log(user_role);
       try {
