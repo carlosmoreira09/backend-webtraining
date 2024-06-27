@@ -6,7 +6,6 @@ import {
   PrimaryGeneratedColumn,
   Timestamp,
 } from 'typeorm';
-import { PaymentStatus } from './userDTO/user.dto';
 
 @Entity({ name: 'users' })
 export class UsersEntity {
@@ -43,11 +42,9 @@ export class UsersEntity {
   paymentDate?: Date;
 
   @Column({
-    type: 'enum',
-    enum: PaymentStatus,
-    default: PaymentStatus.pago,
+    default: null,
   })
-  paymentStatus: PaymentStatus;
+  paymentStatus?: string;
 
   @Column({
     name: 'updated_at',

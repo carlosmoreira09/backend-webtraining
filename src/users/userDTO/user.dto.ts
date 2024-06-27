@@ -11,10 +11,5 @@ export interface NewUserDTO {
   userType: string;
   isActive?: boolean;
   paymentDate?: Date;
-  paymentStatus?: PaymentStatus;
-}
-
-export enum PaymentStatus {
-  pago = 'Pago',
-  delayed = 'Nao Pago',
+  paymentStatus?: string;
 }
