@@ -21,36 +21,18 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Post('register')
-  async register(
-    @Body() data: NewUserDTO,
-    @Headers('user_role') user_role: string,
-  ): Promise<Promise<GeneralReturnDTO> | HttpException> {
-    console.log(user_role);
-    if (user_role && user_role == 'admin') {
-      console.log(user_role);
-      try {
-        return await this.authService.register(data);
-      } catch (error) {
-        throw new HttpException(
-          {
-            statusCode: HttpStatus.BAD_REQUEST,
-            error: 'Dados Inválidos',
-          },
-          HttpStatus.BAD_REQUEST,
-          {
-            cause: error,
-          },
-        );
-      }
-    } else {
-      return new HttpException(
+  async register(@Body() data: NewUserDTO): Promise<GeneralReturnDTO> {
+    try {
+      return await this.authService.register(data);
+    } catch (error) {
+      throw new HttpException(
         {
-          statusCode: HttpStatus.UNAUTHORIZED,
-          error: 'Usuário sem acesso',
+          statusCode: HttpStatus.BAD_REQUEST,
+          error: 'Dados Inválidos',
         },
         HttpStatus.BAD_REQUEST,
         {
-          cause: 'Usuário sem acesso',
+          cause: error,
         },
       );
     }
