@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
@@ -49,4 +49,5 @@ import { SheetsService } from '../sheets/sheets.service';
     SheetsService,
   ],
 })
-export class AuthModule {}
+export class AuthModule {
+}

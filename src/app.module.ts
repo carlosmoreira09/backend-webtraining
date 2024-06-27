@@ -6,14 +6,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { LoggingMiddleware } from './middlewares/logging-middleware';
 import { DatabaseModule } from './config/database.module';
 import { ConfigModule } from '@nestjs/config';
-import { SheetsService } from './sheets/sheets.service';
-import { UsersService } from './users/users.service';
-import { ExercisesService } from './exercises/exercises.service';
-import { AuthService } from './auth/auth.service';
-import { ClientsService } from './clients/clients.service';
-import { AuthModule } from './auth/auth.module';
-import { ClientsModule } from './clients/clients.module';
-import { SheetsModule } from './sheets/sheets.module';
 
 @Module({
   imports: [

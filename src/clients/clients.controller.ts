@@ -7,7 +7,8 @@ import {
   HttpException,
   HttpStatus,
   Param,
-  Post, Put,
+  Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { ClientsService } from './clients.service';
@@ -44,6 +45,7 @@ export class ClientsController {
       );
     }
   }
+
   @UseGuards(JwtAuthGuard)
   @Post('sheets/:id_sheet')
   async updateClientSheet(
@@ -65,6 +67,7 @@ export class ClientsController {
       );
     }
   }
+
   @UseGuards(JwtAuthGuard)
   @Put()
   async updateClientData(

@@ -7,7 +7,8 @@ import {
   HttpException,
   HttpStatus,
   Param,
-  Post, Put,
+  Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
@@ -17,8 +18,7 @@ import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 
 @Controller('exercises')
 export class ExercisesController {
-  constructor(private readonly exerciseService: ExercisesService) {
-  }
+  constructor(private readonly exerciseService: ExercisesService) {}
 
   @UseGuards(JwtAuthGuard)
   @Get()

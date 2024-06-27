@@ -35,5 +35,4 @@ import { Module } from '@nestjs/common';
   ],
   exports: [DatabaseModule],
 })
-export class DatabaseModule {
-}
+export class DatabaseModule {}

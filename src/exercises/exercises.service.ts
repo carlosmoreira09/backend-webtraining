@@ -88,8 +88,9 @@ export class ExercisesService {
       message: 'Exercise removido',
     };
   }
+
   async updateExercise(updateExercise: ExerciseDTO) {
-    const teste = await this.exerciseRepository
+    await this.exerciseRepository
       .findOne({
         where: {
           id_exercise: updateExercise.id_exercise,
@@ -108,6 +109,7 @@ export class ExercisesService {
       message: 'Exercicio Alterado',
     };
   }
+
   async getExercise(id: number) {
     const exercise = await this.exerciseRepository.findOneBy({
       id_exercise: id,

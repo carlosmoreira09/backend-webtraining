@@ -62,8 +62,9 @@ export class SheetsService {
 
     return listSheetWithExercises;
   }
+
   async updateSheet(updateSheet: CreateSheetDTO) {
-    const teste = await this.sheetsRepository
+    await this.sheetsRepository
       .findOne({
         where: {
           id_sheet: updateSheet.id_sheet,

@@ -77,6 +77,7 @@ export class ClientsService {
 
     return listAthleteToFront;
   }
+
   async getSheetById(id_sheet: number) {
     return await this.sheetService.listSheetById(id_sheet);
   }
@@ -90,7 +91,6 @@ export class ClientsService {
   }
 
   async updateClient(updateClient: NewClientDTO) {
-
     await this.clientsRepository
       .findOne({
         where: {

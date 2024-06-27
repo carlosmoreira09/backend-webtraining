@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { SheetsController } from './sheets.controller';
 import { SheetsService } from './sheets.service';
 import { ExercisesService } from '../exercises/exercises.service';
@@ -9,13 +9,14 @@ import { AuthModule } from '../auth/auth.module';
 import { AuthService } from '../auth/auth.service';
 import { LocalStrategy } from '../guards/local-strategy';
 import { JwtStrategy } from '../guards/jwt-strategy';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientsEntity } from '../clients/clients.entity';
 import { UsersEntity } from '../users/users.entity';
 import { ExercisesEntity } from '../exercises/exercises.entity';
 import { SheetsEntity } from './sheets.entity';
 import { PassportModule } from '@nestjs/passport';
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -50,5 +51,4 @@ import { PassportModule } from '@nestjs/passport';
     SheetsService,
   ],
 })
-export class SheetsModule {
-}
+export class SheetsModule {}
