@@ -41,7 +41,7 @@ export class ExercisesController {
       }),
     }),
   )
-  async uploadVideo(@UploadedFile() file: File) {
+  async uploadVideo(@UploadedFile() file: any) {
     try {
       console.log(file.fieldname);
       console.log(file.originalname);
