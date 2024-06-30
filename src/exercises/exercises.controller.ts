@@ -45,14 +45,9 @@ export class ExercisesController {
   async uploadVideo(
     @UploadedFile()
     file: File,
-    @Body()
-    uploadVideo: any,
   ) {
     try {
-      return await this.exerciseService.saveVideo(
-        file.filename,
-        parseInt(uploadVideo.id_exercise),
-      );
+      return await this.exerciseService.saveVideo(file);
     } catch (error) {
       throw new HttpException(
         {

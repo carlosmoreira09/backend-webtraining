@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { ExerciseDTO } from './exerciseDTO/exercise.dto';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 import { UsersService } from '../users/users.service';
+import { File } from '@nest-lab/fastify-multer';
 
 @Injectable()
 export class ExercisesService {
@@ -46,14 +47,13 @@ export class ExercisesService {
       },
     });
   }
-  async saveVideo(
-    fileName: string,
-    id_exercise: number,
-  ): Promise<GeneralReturnDTO> {
+  async saveVideo(fileName: File): Promise<GeneralReturnDTO> {
+    const id_exercise = fileName.filename.toString().split('__')[0];
+    const videoName = fileName.filename.toString().split('__')[1];
     await this.exerciseRepository
       .findOne({
         where: {
-          id_exercise: id_exercise,
+          id_exercise: parseInt(id_exercise),
         },
       })
       .then(async (result) => {
@@ -62,7 +62,7 @@ export class ExercisesService {
             id_exercise: result.id_exercise,
           },
           {
-            videoName: fileName,
+            videoName: videoName,
           },
         );
       });
