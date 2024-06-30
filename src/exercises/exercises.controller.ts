@@ -12,15 +12,15 @@ import {
   UseGuards,
   UploadedFile,
   UseInterceptors,
-  ParseFilePipeBuilder,
 } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
-import { ExerciseDTO, VideoDTO } from './exerciseDTO/exercise.dto';
+import { ExerciseDTO } from './exerciseDTO/exercise.dto';
 import { JwtAuthGuard } from '../guards/jwt.guard';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 import { FileInterceptor, File } from '@nest-lab/fastify-multer';
 import { diskStorage } from 'fastify-multer';
-import { fileFilter, fileName } from '../utils/utils';
+import { fileName } from '../utils/utils';
+import * as process from 'node:process';
 
 @Controller('exercises')
 export class ExercisesController {
@@ -36,16 +36,12 @@ export class ExercisesController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './src/uploadFile',
+        destination: process.env.DIRECTORY_VIDEO,
         filename: fileName,
       }),
-      fileFilter: fileFilter,
     }),
   )
-  async uploadVideo(
-    @Body()
-    file: File,
-  ) {
+  async uploadVideo(@UploadedFile() file: File) {
     try {
       console.log(file.fieldname);
       console.log(file.originalname);

@@ -15,9 +15,11 @@ import { ExercisesEntity } from './exercises.entity';
 import { PassportModule } from '@nestjs/passport';
 import { SheetsEntity } from '../sheets/sheets.entity';
 import { SheetsService } from '../sheets/sheets.service';
+import { FastifyMulterModule } from '@nest-lab/fastify-multer';
 
 @Module({
   imports: [
+    FastifyMulterModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forFeature([
       ClientsEntity,
