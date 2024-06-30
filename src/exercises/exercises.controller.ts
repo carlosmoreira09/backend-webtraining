@@ -47,6 +47,8 @@ export class ExercisesController {
     file: File,
   ) {
     try {
+      console.log(file);
+      console.log(file.filename);
       return await this.exerciseService.saveVideo(file);
     } catch (error) {
       throw new HttpException(
