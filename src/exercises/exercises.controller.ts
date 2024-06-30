@@ -32,7 +32,7 @@ export class ExercisesController {
     return await this.exerciseService.listAllExercises();
   }
 
-  @Post('/uploadVideo')
+  @Put('/uploadVideo')
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
