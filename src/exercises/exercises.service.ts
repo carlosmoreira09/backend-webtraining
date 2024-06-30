@@ -48,7 +48,7 @@ export class ExercisesService {
     });
   }
   async saveVideo(fileName: File): Promise<GeneralReturnDTO> {
-    console.log(fileName.filename);
+    console.log(fileName.path);
     const id_exercise = fileName.originalname.toString().split('__')[0];
     const videoName = fileName.originalname.toString().split('__')[1];
     await this.exerciseRepository
