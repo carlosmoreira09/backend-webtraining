@@ -43,15 +43,7 @@ export class ExercisesController {
     }),
   )
   async uploadVideo(
-    @UploadedFile(
-      new ParseFilePipeBuilder()
-        .addMaxSizeValidator({
-          maxSize: 10000000,
-        })
-        .build({
-          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-        }),
-    )
+    @UploadedFile()
     file: File,
     @Body()
     uploadVideo: VideoDTO,
