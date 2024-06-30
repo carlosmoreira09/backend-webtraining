@@ -43,7 +43,7 @@ export class ExercisesController {
     }),
   )
   async uploadVideo(
-    @UploadedFile()
+    @Body()
     file: File,
   ) {
     try {
