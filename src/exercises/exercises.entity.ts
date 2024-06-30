@@ -25,6 +25,11 @@ export class ExercisesEntity {
   @Column()
   exercise_desc: string;
 
+  @Column({
+    default: null,
+  })
+  videoName?: string;
+
   @Column()
   exercise_type: string;
 }

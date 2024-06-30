@@ -10,11 +10,17 @@ import {
   Post,
   Put,
   UseGuards,
+  UploadedFile,
+  UseInterceptors,
+  ParseFilePipeBuilder,
 } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
-import { ExerciseDTO } from './exerciseDTO/exercise.dto';
+import { ExerciseDTO, VideoDTO } from './exerciseDTO/exercise.dto';
 import { JwtAuthGuard } from '../guards/jwt.guard';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
+import { FileInterceptor, File } from '@nest-lab/fastify-multer';
+import { diskStorage } from 'fastify-multer';
+import { fileFilter, fileName } from '../utils/utils';
 
 @Controller('exercises')
 export class ExercisesController {
@@ -24,6 +30,49 @@ export class ExercisesController {
   @Get()
   async listAll() {
     return await this.exerciseService.listAllExercises();
+  }
+
+  @Post('/uploadVideo')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './src/uploadFile',
+        filename: fileName,
+      }),
+      fileFilter: fileFilter,
+    }),
+  )
+  async uploadVideo(
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addMaxSizeValidator({
+          maxSize: 10000000,
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    file: File,
+    @Body()
+    uploadVideo: VideoDTO,
+  ) {
+    try {
+      return await this.exerciseService.saveVideo(
+        file.filename,
+        parseInt(uploadVideo.id_exercise),
+      );
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          error: 'Erro ao Salvar Video',
+        },
+        HttpStatus.BAD_REQUEST,
+        {
+          cause: error,
+        },
+      );
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -38,7 +87,7 @@ export class ExercisesController {
       throw new HttpException(
         {
           statusCode: HttpStatus.BAD_REQUEST,
-          error: 'Tipo não encontrado',
+          error: 'Tipo de Exercicio não encontrado',
         },
         HttpStatus.BAD_REQUEST,
         {

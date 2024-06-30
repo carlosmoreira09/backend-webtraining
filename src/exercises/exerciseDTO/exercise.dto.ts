@@ -7,4 +7,12 @@ export interface ExerciseDTO {
   exercise_type: string;
   repetition: string;
   admin?: UsersEntity;
+  videoName?: string;
+}
+
+export interface VideoDTO {
+  id_exercise?: string;
+  videoName: string;
+  file: File;
+  fileName: string;
 }

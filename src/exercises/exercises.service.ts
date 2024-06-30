@@ -46,6 +46,31 @@ export class ExercisesService {
       },
     });
   }
+  async saveVideo(
+    fileName: string,
+    id_exercise: number,
+  ): Promise<GeneralReturnDTO> {
+    await this.exerciseRepository
+      .findOne({
+        where: {
+          id_exercise: id_exercise,
+        },
+      })
+      .then(async (result) => {
+        await this.exerciseRepository.update(
+          {
+            id_exercise: result.id_exercise,
+          },
+          {
+            videoName: fileName,
+          },
+        );
+      });
+    return {
+      message: 'Video salvo',
+      status: 200,
+    };
+  }
 
   async listExerciseByType(
     type: string,
@@ -58,6 +83,7 @@ export class ExercisesService {
         exercise_type: true,
         exercise_desc: true,
         repetition: true,
+        videoName: true,
         admin: {
           id_user: true,
           fullName: true,

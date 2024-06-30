@@ -49,5 +49,4 @@ import { SheetsService } from '../sheets/sheets.service';
     SheetsService,
   ],
 })
-export class AuthModule {
-}
+export class AuthModule {}
