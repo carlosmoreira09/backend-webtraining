@@ -46,7 +46,7 @@ export class ExercisesController {
     @UploadedFile()
     file: File,
     @Body()
-    uploadVideo: VideoDTO,
+    uploadVideo: any,
   ) {
     try {
       return await this.exerciseService.saveVideo(
