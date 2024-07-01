@@ -9,22 +9,22 @@ import {
   Param,
   Post,
   Put,
-  UseGuards,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
-import { ExerciseDTO } from './exerciseDTO/exercise.dto';
+import { ExerciseDTO, UploadVideoDTO } from './exerciseDTO/exercise.dto';
 import { JwtAuthGuard } from '../guards/jwt.guard';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
-import { FileInterceptor, File } from '@nest-lab/fastify-multer';
+import { FileInterceptor } from '@nest-lab/fastify-multer';
 import { diskStorage } from 'fastify-multer';
 import { fileName } from '../utils/utils';
-import * as process from 'node:process';
 
 @Controller('exercises')
 export class ExercisesController {
-  constructor(private readonly exerciseService: ExercisesService) {}
+  constructor(private readonly exerciseService: ExercisesService) {
+  }
 
   @UseGuards(JwtAuthGuard)
   @Get()
@@ -41,11 +41,10 @@ export class ExercisesController {
       }),
     }),
   )
-  async uploadVideo(@UploadedFile() file: any) {
+  async uploadVideo(@UploadedFile() upload: any) {
     try {
-      console.log(file.fieldname);
-      console.log(file.originalname);
-      return await this.exerciseService.saveVideo(file);
+      const uploadedFile: UploadVideoDTO = upload;
+      return await this.exerciseService.saveVideo(uploadedFile);
     } catch (error) {
       throw new HttpException(
         {

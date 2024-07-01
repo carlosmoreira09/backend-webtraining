@@ -22,7 +22,8 @@ export class ClientsController {
   constructor(
     private readonly clientService: ClientsService,
     private readonly sheetService: SheetsService,
-  ) {}
+  ) {
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post()

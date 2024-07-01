@@ -2,10 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExercisesEntity } from './exercises.entity';
 import { Repository } from 'typeorm';
-import { ExerciseDTO } from './exerciseDTO/exercise.dto';
+import { ExerciseDTO, UploadVideoDTO } from './exerciseDTO/exercise.dto';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 import { UsersService } from '../users/users.service';
-import { File } from '@nest-lab/fastify-multer';
 
 @Injectable()
 export class ExercisesService {
@@ -13,7 +12,8 @@ export class ExercisesService {
     @InjectRepository(ExercisesEntity)
     private readonly exerciseRepository: Repository<ExercisesEntity>,
     private userService: UsersService,
-  ) {}
+  ) {
+  }
 
   async create(
     newExercise: ExerciseDTO,
@@ -47,14 +47,14 @@ export class ExercisesService {
       },
     });
   }
-  async saveVideo(fileName: File): Promise<GeneralReturnDTO> {
-    console.log(fileName.path);
-    const id_exercise = fileName.originalname.toString().split('__')[0];
-    const videoName = fileName.originalname.toString().split('__')[1];
+
+  async saveVideo(fileName: UploadVideoDTO): Promise<GeneralReturnDTO> {
+    const id_exercise = parseInt(fileName.originalname.split('__')[0]);
+    const videoName = fileName.path;
     await this.exerciseRepository
       .findOne({
         where: {
-          id_exercise: parseInt(id_exercise),
+          id_exercise: id_exercise,
         },
       })
       .then(async (result) => {
@@ -63,7 +63,7 @@ export class ExercisesService {
             id_exercise: result.id_exercise,
           },
           {
-            videoName: videoName,
+            videoName: videoName.toString(),
           },
         );
       });

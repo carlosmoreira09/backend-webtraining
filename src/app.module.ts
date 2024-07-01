@@ -6,11 +6,9 @@ import { APP_GUARD } from '@nestjs/core';
 import { LoggingMiddleware } from './middlewares/logging-middleware';
 import { DatabaseModule } from './config/database.module';
 import { ConfigModule } from '@nestjs/config';
-import { FastifyMulterModule } from '@nest-lab/fastify-multer';
 
 @Module({
   imports: [
-    FastifyMulterModule,
     ThrottlerModule.forRoot([
       {
         ttl: 30000,

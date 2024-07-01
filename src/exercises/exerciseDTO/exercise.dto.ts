@@ -10,9 +10,12 @@ export interface ExerciseDTO {
   videoName?: string;
 }
 
-export interface VideoDTO {
-  id_exercise?: string;
-  videoName: string;
-  file: File;
-  fileName: string;
+export interface UploadVideoDTO {
+  originalname: any;
+  encoding: any;
+  mimetype: any;
+  buffer: any;
+  size: number;
+  filename: any;
+  path: any;
 }

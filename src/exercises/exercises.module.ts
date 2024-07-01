@@ -51,4 +51,5 @@ import { FastifyMulterModule } from '@nest-lab/fastify-multer';
     SheetsService,
   ],
 })
-export class ExercisesModule {}
+export class ExercisesModule {
+}

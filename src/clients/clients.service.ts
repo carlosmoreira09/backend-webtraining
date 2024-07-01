@@ -1,10 +1,4 @@
-import {
-  forwardRef,
-  HttpException,
-  HttpStatus,
-  Inject,
-  Injectable,
-} from '@nestjs/common';
+import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClientsEntity } from './clients.entity';
 import { Repository } from 'typeorm';
@@ -23,7 +17,8 @@ export class ClientsService {
     private userService: UsersService,
     @Inject(forwardRef(() => SheetsService))
     private readonly sheetService: SheetsService,
-  ) {}
+  ) {
+  }
 
   async listAthletesByUser(id_user: number) {
     const listAthlete: ClientsEntity[] = await this.clientsRepository.find({
