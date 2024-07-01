@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { ExerciseDTO, UploadVideoDTO } from './exerciseDTO/exercise.dto';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 import { UsersService } from '../users/users.service';
+import { File } from '@nest-lab/fastify-multer';
 
 @Injectable()
 export class ExercisesService {
@@ -48,7 +49,7 @@ export class ExercisesService {
     });
   }
 
-  async saveVideo(fileName: UploadVideoDTO): Promise<GeneralReturnDTO> {
+  async saveVideo(fileName: File): Promise<GeneralReturnDTO> {
     const id_exercise = parseInt(fileName.originalname.split('__')[0]);
     const videoName = fileName.path;
     await this.exerciseRepository

@@ -11,20 +11,18 @@ import {
   Put,
   UploadedFile,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
-import { ExerciseDTO, UploadVideoDTO } from './exerciseDTO/exercise.dto';
+import { ExerciseDTO } from './exerciseDTO/exercise.dto';
 import { JwtAuthGuard } from '../guards/jwt.guard';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
-import { FileInterceptor } from '@nest-lab/fastify-multer';
-import { diskStorage } from 'fastify-multer';
-import { fileName } from '../utils/utils';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage, Multer } from 'multer';
+import { fileFilter, fileName } from '../utils/utils';
 
 @Controller('exercises')
 export class ExercisesController {
-  constructor(private readonly exerciseService: ExercisesService) {
-  }
+  constructor(private readonly exerciseService: ExercisesService) {}
 
   @UseGuards(JwtAuthGuard)
   @Get()
@@ -33,18 +31,11 @@ export class ExercisesController {
   }
 
   @Post('/uploadVideo')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: process.env.DIRECTORY_VIDEO,
-        filename: fileName,
-      }),
-    }),
-  )
-  async uploadVideo(@UploadedFile() upload: any) {
+  async uploadVideo(@UploadedFile() file: Express.Multer.File) {
     try {
-      const uploadedFile: UploadVideoDTO = upload;
-      return await this.exerciseService.saveVideo(uploadedFile);
+      console.log(file);
+      console.log(file.originalname);
+      // await this.exerciseService.saveVideo(file);
     } catch (error) {
       throw new HttpException(
         {

@@ -11,3 +11,13 @@ export const fileName = (
     .join('');
   callback(null, `${id_video}__${name.replace(' ', '-')}.${fileExtName}`);
 };
+export const fileFilter = (
+  _req: any,
+  file: { originalname: string },
+  callback: (arg0: Error, arg1: boolean) => void,
+) => {
+  if (!file.originalname.match(/\.(mov|mp4)$/)) {
+    return callback(new Error('Only mov and mp4 movie are allowed!'), false);
+  }
+  callback(null, true);
+};
