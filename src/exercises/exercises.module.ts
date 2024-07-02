@@ -16,14 +16,13 @@ import { PassportModule } from '@nestjs/passport';
 import { SheetsEntity } from '../sheets/sheets.entity';
 import { SheetsService } from '../sheets/sheets.service';
 import { FastifyMulterModule } from '@nest-lab/fastify-multer';
-import { MulterModule } from '@nestjs/platform-express';
+import { storage } from '../utils/utils';
 
 @Module({
   imports: [
-    MulterModule.register({
-      dest: process.env.DIRECTORY_VIDEO,
+    FastifyMulterModule.register({
+      storage: storage,
     }),
-    FastifyMulterModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forFeature([
       ClientsEntity,

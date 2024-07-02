@@ -11,14 +11,14 @@ import {
   Put,
   UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
 import { ExerciseDTO } from './exerciseDTO/exercise.dto';
 import { JwtAuthGuard } from '../guards/jwt.guard';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage, Multer } from 'multer';
-import { fileFilter, fileName } from '../utils/utils';
+import { FileInterceptor } from '@nest-lab/fastify-multer';
+import { Multer } from 'multer';
 
 @Controller('exercises')
 export class ExercisesController {
@@ -31,10 +31,10 @@ export class ExercisesController {
   }
 
   @Post('/uploadVideo')
+  @UseInterceptors(FileInterceptor('file'))
   async uploadVideo(@UploadedFile() file: Express.Multer.File) {
     try {
       console.log(file);
-      console.log(file.originalname);
       // await this.exerciseService.saveVideo(file);
     } catch (error) {
       throw new HttpException(

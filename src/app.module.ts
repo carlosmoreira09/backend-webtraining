@@ -24,7 +24,7 @@ import { ConfigModule } from '@nestjs/config';
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
-    },
+    }
   ],
 })
 export class AppModule implements NestModule {

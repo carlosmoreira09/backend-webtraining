@@ -9,6 +9,7 @@ import {
 } from '@nestjs/platform-fastify';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import multer from 'fastify-multer';
 
 async function bootstrap() {
   const configService: ConfigService = new ConfigService();
@@ -16,6 +17,7 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
+  await app.register(multer.contentParser);
   await app.register(helmet);
   await app.register(fastifyCsrfProtection);
   await app.register(secureSession, {
@@ -30,8 +32,8 @@ async function bootstrap() {
     }),
   );
   app.enableCors({
-    origin: true,
-    methods: process.env.METHODS_ALLOW,
+    origin: '*', // ou use '*' para permitir todas as origens
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
   app.setGlobalPrefix('api');
