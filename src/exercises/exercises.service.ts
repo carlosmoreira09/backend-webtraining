@@ -51,7 +51,7 @@ export class ExercisesService {
 
   async saveVideo(fileName: File): Promise<GeneralReturnDTO> {
     const id_exercise = parseInt(fileName.originalname.split('__')[0]);
-    const videoName = fileName.path;
+    const videoName = fileName.filename;
     await this.exerciseRepository
       .findOne({
         where: {
@@ -64,7 +64,7 @@ export class ExercisesService {
             id_exercise: result.id_exercise,
           },
           {
-            videoName: videoName.toString(),
+            videoName: videoName,
           },
         );
       });

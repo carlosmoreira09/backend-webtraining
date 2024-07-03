@@ -34,8 +34,7 @@ export class ExercisesController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadVideo(@UploadedFile() file: Express.Multer.File) {
     try {
-      console.log(file);
-      // await this.exerciseService.saveVideo(file);
+      await this.exerciseService.saveVideo(file);
     } catch (error) {
       throw new HttpException(
         {

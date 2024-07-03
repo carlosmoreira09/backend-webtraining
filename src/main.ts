@@ -33,7 +33,7 @@ async function bootstrap() {
   );
   app.enableCors({
     origin: '*', // ou use '*' para permitir todas as origens
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    methods: configService.get('METHODS_ALLOW'),
     credentials: true,
   });
   app.setGlobalPrefix('api');
