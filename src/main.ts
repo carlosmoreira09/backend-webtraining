@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import helmet from '@fastify/helmet';
 import fastifyCsrfProtection from '@fastify/csrf-protection';
 import secureSession from '@fastify/secure-session';
 import {
@@ -10,6 +9,7 @@ import {
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import multer from 'fastify-multer';
+import fastifyHelmet from '@fastify/helmet';
 
 async function bootstrap() {
   const configService: ConfigService = new ConfigService();
@@ -18,7 +18,9 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
   await app.register(multer.contentParser);
-  await app.register(helmet);
+  await app.register(fastifyHelmet, {
+    contentSecurityPolicy: false,
+  });
   await app.register(fastifyCsrfProtection);
   await app.register(secureSession, {
     secret: configService.get('SESSION_SECRET'),

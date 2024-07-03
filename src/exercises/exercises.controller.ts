@@ -30,11 +30,12 @@ export class ExercisesController {
     return await this.exerciseService.listAllExercises();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/uploadVideo')
   @UseInterceptors(FileInterceptor('file'))
   async uploadVideo(@UploadedFile() file: Express.Multer.File) {
     try {
-      await this.exerciseService.saveVideo(file);
+      return await this.exerciseService.saveVideo(file);
     } catch (error) {
       throw new HttpException(
         {
