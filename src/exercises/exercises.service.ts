@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExercisesEntity } from './exercises.entity';
 import { Repository } from 'typeorm';
-import { ExerciseDTO, UploadVideoDTO } from './exerciseDTO/exercise.dto';
+import { ExerciseDTO } from './exerciseDTO/exercise.dto';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 import { UsersService } from '../users/users.service';
 import { File } from '@nest-lab/fastify-multer';
@@ -13,8 +13,7 @@ export class ExercisesService {
     @InjectRepository(ExercisesEntity)
     private readonly exerciseRepository: Repository<ExercisesEntity>,
     private userService: UsersService,
-  ) {
-  }
+  ) {}
 
   async create(
     newExercise: ExerciseDTO,
@@ -106,14 +105,20 @@ export class ExercisesService {
   }
 
   async remove(id_exercicio: number): Promise<GeneralReturnDTO> {
-    this.exerciseRepository
-      .findOneBy({ id_exercise: id_exercicio })
+    await this.exerciseRepository
+      .findOne({
+        where: {
+          id_exercise: id_exercicio,
+        },
+      })
       .then(async (result) => {
-        await this.exerciseRepository.remove(result);
+        await this.exerciseRepository.delete({
+          id_exercise: result.id_exercise,
+        });
       });
     return {
       status: 200,
-      message: 'Exercise removido',
+      message: 'Exercício removido',
     };
   }
 

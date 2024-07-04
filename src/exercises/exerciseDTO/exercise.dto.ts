@@ -9,13 +9,3 @@ export interface ExerciseDTO {
   admin?: UsersEntity;
   videoName?: string;
 }
-
-export interface UploadVideoDTO {
-  originalname: any;
-  encoding: any;
-  mimetype: any;
-  buffer: any;
-  size: number;
-  filename: any;
-  path: any;
-}
