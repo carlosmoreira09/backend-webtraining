@@ -41,26 +41,34 @@ monitoring their exercise routines. With it, users can:
 |------------------|----------------|---------|
 | Version          | Estimated Date | Status  |
 | 1.0              | 30th July      | In time |
+| 2.0              | 30th August    | In time |
 
-| SubTasks - Frontend              | Estimated Date | Status  |
-|----------------------------------|----------------|---------|
-| HomeModule                       | 25th May       | Done    |
-| AuthModule                       | 27th May       | Done    |
-| UserModule                       | 28th May       | Done    |
-| SheetModule                      | 28th May       | Done    |
-| ExercicesModule                  | 28th May       | Done    |
-| ClientModule                     | 29th May       | Done    |
-| Guards                           | 1th June       | Done    |
-| JwtService                       | 2th June       | Done    |
-| Integration Between UserXClient  | 5th June       | Ongoing |
-| Integration Between SheetXUser   | 10h June       | Waiting |
-| Integration Between SheetXClient | 15th June      | Waiting |
+
+| SubTasks - Frontend                | Estimated Date | Status  |
+|------------------------------------|----------------|---------|
+| HomeModule                         | 25th May       | Done    |
+| AuthModule                         | 27th May       | Done    |
+| UserModule                         | 28th May       | Done    |
+| SheetModule                        | 28th May       | Done    |
+| ExercicesModule                    | 28th May       | Done    |
+| ClientModule                       | 29th May       | Done    |
+| Guards                             | 1th June       | Done    |
+| JwtService                         | 2th June       | Done    |
+| Integration Between UserXClient    | 5th June       | Done    |
+| Integration Between SheetXUser     | 10h June       | Done    |
+| Integration Between SheetXClient   | 15th June      | Done    |
+| CRUD to return USER to admin       | 09th July      | Ongoing |
+| endpoint to change user password   | 10th July      | Waiting |
+| endpoint to change client password | 11th July      | Waiting |
+
 
 | Project Improvements - Mapped |
 
-| Improvement                                    | Estimated Date | Status      |
-|------------------------------------------------|----------------|-------------|
-| Task                                           | Estimated Date | Status      |
-| Handling errors                                | Not Planned    | Not Started |
-| Implementing model in Return Messages to front | Not Planned    | Not Started |
-| Endpoint to return exercise type               | Not Planned    | Not Started |
+| Improvement                                                | Estimated Date | Status      |
+|------------------------------------------------------------|----------------|-------------|
+| Task                                                       | Estimated Date | Status      |
+| Handling errors                                            | Done           | Deployed    |
+| Implementing model in Return Messages to front             | Done           | Deployed    |
+| Endpoint to return exercise type                           | Planned        | Not Started |
+| Increase number of training                                | Planned        | Not Started |
+| Add column to add title for each training session(A/B/C/D) | Planned        | Not Started |
