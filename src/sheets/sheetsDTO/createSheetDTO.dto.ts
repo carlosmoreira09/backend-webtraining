@@ -11,4 +11,5 @@ export interface CreateSheetDTO {
   training_d?: string;
   admin?: UsersEntity;
   id_client?: any;
+  id_user?: number
 }

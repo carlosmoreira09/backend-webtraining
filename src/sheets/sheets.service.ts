@@ -155,10 +155,10 @@ export class SheetsService {
     return sheetToFront;
   }
 
-  async create(newSheet: CreateSheetDTO, id_user: number): Promise<any> {
+  async create(newSheet: CreateSheetDTO): Promise<any> {
     try {
       const id_client = newSheet.id_client;
-      newSheet.admin = await this.userService.getUserInfo(id_user);
+      newSheet.admin = await this.userService.getUserInfo(newSheet.id_user);
       if (newSheet.id_client != null) {
         newSheet.id_client = await this.clientService.getClient(
           parseInt(id_client),

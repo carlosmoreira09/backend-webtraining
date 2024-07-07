@@ -66,10 +66,9 @@ export class SheetsController {
   @Post()
   async createSheet(
     @Body() newSheet: CreateSheetDTO,
-    @Headers('id_user') id_user: number,
   ): Promise<GeneralReturnDTO> {
     try {
-      return await this.sheetsService.create(newSheet, id_user);
+      return await this.sheetsService.create(newSheet);
     } catch (error) {
       throw new HttpException(
         {
