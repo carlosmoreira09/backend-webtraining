@@ -122,9 +122,8 @@ export class ClientsService {
 
   async create(
     newClient: NewClientDTO,
-    id_user: number,
   ): Promise<GeneralReturnDTO> {
-    newClient.admin = await this.userService.getUserInfo(id_user);
+    newClient.admin = await this.userService.getUserInfo(newClient.id_user);
     if (!newClient.admin) {
       throw new HttpException('Usuário não existe', HttpStatus.FOUND);
     }

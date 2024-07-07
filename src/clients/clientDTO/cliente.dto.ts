@@ -24,4 +24,5 @@ export interface NewClientDTO {
   id_sheets?: number;
   old_sheets?: string;
   admin?: UsersEntity;
+  id_user?: number;
 }

@@ -22,17 +22,13 @@ export class ClientsController {
   constructor(
     private readonly clientService: ClientsService,
     private readonly sheetService: SheetsService,
-  ) {
-  }
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create(
-    @Body() clientRequest: NewClientDTO,
-    @Headers('id_user') id_user: number,
-  ) {
+  async create(@Body() clientRequest: NewClientDTO) {
     try {
-      return await this.clientService.create(clientRequest, id_user);
+      return await this.clientService.create(clientRequest);
     } catch (error) {
       throw new HttpException(
         {
