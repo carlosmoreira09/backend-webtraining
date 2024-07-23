@@ -104,6 +104,26 @@ export class ClientsController {
       );
     }
   }
+  @UseGuards(JwtAuthGuard)
+  @Get('user/:id_user')
+  async getClientInfo(@Param('id_user') id_user: number) {
+    try {
+      const user = await this.clientService.getClient(id_user);
+      delete user.password;
+      return user;
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.CONFLICT,
+          error: 'Erro ao Carregar dados do Atleta',
+        },
+        HttpStatus.CONFLICT,
+        {
+          cause: error,
+        },
+      );
+    }
+  }
 
   @UseGuards(JwtAuthGuard)
   @Get('/sheets/:id_sheet')
