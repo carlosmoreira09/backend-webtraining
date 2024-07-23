@@ -1,6 +1,7 @@
 export interface UserDTO {
   username: string;
   password: string;
+  isUser?: boolean;
 }
 
 export interface NewUserDTO {

@@ -6,11 +6,22 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersEntity } from './users.entity';
 import { ConfigModule } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
+import { ClientsEntity } from '../clients/clients.entity';
+import { ClientsService } from '../clients/clients.service';
+import { SheetsService } from '../sheets/sheets.service';
+import { SheetsEntity } from '../sheets/sheets.entity';
+import { ExercisesEntity } from '../exercises/exercises.entity';
+import { ExercisesService } from '../exercises/exercises.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forFeature([UsersEntity]),
+    TypeOrmModule.forFeature([
+      ClientsEntity,
+      SheetsEntity,
+      UsersEntity,
+      ExercisesEntity,
+    ]),
     PassportModule.register({
       defaultStrategy: process.env.DEFAULT_STRATEGY,
       property: process.env.DEFAULT_USER,
@@ -24,7 +35,13 @@ import { PassportModule } from '@nestjs/passport';
     }),
   ],
   controllers: [],
-  providers: [UsersService, AuthService, JwtService],
+  providers: [
+    UsersService,
+    AuthService,
+    JwtService,
+    ClientsService,
+    SheetsService,
+    ExercisesService,
+  ],
 })
-export class UsersModule {
-}
+export class UsersModule {}

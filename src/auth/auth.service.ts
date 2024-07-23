@@ -1,18 +1,25 @@
-import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { NewUserDTO, UserDTO } from '../users/userDTO/user.dto';
 import { UsersEntity } from '../users/users.entity';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
+import { ClientsService } from '../clients/clients.service';
+import { ClientsEntity } from 'src/clients/clients.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UsersService,
+    private clientService: ClientsService,
     private jwtService: JwtService,
-  ) {
-  }
+  ) {}
 
   async register(data: NewUserDTO): Promise<GeneralReturnDTO> {
     const checkUserExists = await this.userService.validadeUserExist(
@@ -39,9 +46,15 @@ export class AuthService {
   }
 
   async login(data: UserDTO) {
-    const checkUserExists = await this.userService.validadeUserExist(
-      data.username,
-    );
+    let checkUserExists: UsersEntity | ClientsEntity;
+    if (data.isUser) {
+      checkUserExists = await this.clientService.validadeUserExist(
+        data.username,
+      );
+    }
+    if (!data.isUser) {
+      checkUserExists = await this.userService.validadeUserExist(data.username);
+    }
 
     if (!checkUserExists) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
@@ -54,14 +67,33 @@ export class AuthService {
     if (!checkPassword) {
       throw new UnauthorizedException();
     }
-    if (checkUserExists) {
-      const accessToken = this.generateJWT({
-        id: checkUserExists.id_user,
-        username: checkUserExists.username,
-        name: checkUserExists.fullName,
-        email: checkUserExists.email,
-        role: checkUserExists.userType,
-      });
+    let accessToken;
+    if (!data.isUser && checkUserExists) {
+      if (!(checkUserExists instanceof ClientsEntity)) {
+        accessToken = this.generateJWT({
+          id: checkUserExists.id_user,
+          username: checkUserExists.username,
+          name: checkUserExists.fullName,
+          email: checkUserExists.email,
+          role: checkUserExists.userType,
+        });
+      }
+      return {
+        statusCode: 200,
+        message: 'Logged',
+        accessToken: accessToken,
+      };
+    }
+    if (data.isUser && checkUserExists) {
+      if (!(checkUserExists instanceof UsersEntity)) {
+        accessToken = this.generateJWT({
+          id: checkUserExists.id_client,
+          username: checkUserExists.admin.username,
+          name: checkUserExists.fullName,
+          email: checkUserExists.email,
+          role: 'user',
+        });
+      }
 
       return {
         statusCode: 200,
