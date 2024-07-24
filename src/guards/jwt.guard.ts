@@ -13,11 +13,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') implements IAuthGuard {
       .switchToHttp()
       .getRequest()
       .headers['authorization'].split('Bearer ')[1];
-    let user: UsersEntity = null;
+    let user = null;
     if (jwtToken) {
       if (await this.helper.validate(jwtToken)) {
         user = await this.helper.decode(jwtToken);
       }
+    }
+    if (user?.role === 'user') {
+      return !!(user && user.name);
     }
     return !!(user && user.username);
   }

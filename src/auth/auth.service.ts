@@ -47,15 +47,18 @@ export class AuthService {
 
   async login(data: UserDTO) {
     let checkUserExists: UsersEntity | ClientsEntity;
+    let admin: UsersEntity;
     if (data.isUser) {
-      checkUserExists = await this.clientService.validadeUserExist(
+      checkUserExists = (await this.clientService.validadeUserExist(
         data.username,
-      );
+      )) as unknown as ClientsEntity;
+      admin = checkUserExists.admin;
     }
     if (!data.isUser) {
-      checkUserExists = await this.userService.validadeUserExist(data.username);
+      checkUserExists = (await this.userService.validadeUserExist(
+        data.username,
+      )) as UsersEntity;
     }
-
     if (!checkUserExists) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
@@ -67,7 +70,7 @@ export class AuthService {
     if (!checkPassword) {
       throw new UnauthorizedException();
     }
-    let accessToken;
+    let accessToken: string;
     if (!data.isUser && checkUserExists) {
       if (!(checkUserExists instanceof ClientsEntity)) {
         accessToken = this.generateJWT({
@@ -84,11 +87,12 @@ export class AuthService {
         accessToken: accessToken,
       };
     }
+
     if (data.isUser && checkUserExists) {
       if (!(checkUserExists instanceof UsersEntity)) {
         accessToken = this.generateJWT({
           id: checkUserExists.id_client,
-          username: checkUserExists.admin.username,
+          username: checkUserExists.admin,
           name: checkUserExists.fullName,
           email: checkUserExists.email,
           role: 'user',
@@ -119,7 +123,7 @@ export class AuthService {
   }
 
   async validateContributor(reviewData: any) {
-    const review = await this.userService.validadeUserExist(
+    const review = await this.clientService.validadeUserExist(
       reviewData.username,
     );
 
@@ -139,9 +143,16 @@ export class AuthService {
 
   public async validate(token: string): Promise<boolean | never> {
     const decoded = await this.jwtService.verify(token);
-    const user: UsersEntity = await this.userService.validadeUserExist(
-      decoded.username,
-    );
+    let user: UsersEntity | ClientsEntity;
+    if (decoded.role === 'user') {
+      user = (await this.clientService.validadeUserExist(
+        decoded.username,
+      )) as ClientsEntity;
+    } else {
+      user = (await this.userService.validadeUserExist(
+        decoded.username,
+      )) as UsersEntity;
+    }
     if (!decoded || !user) {
       throw new UnauthorizedException();
     }
