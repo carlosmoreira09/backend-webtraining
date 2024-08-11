@@ -16,13 +16,13 @@ import { UsersEntity } from '../users/users.entity';
 import { GeneralReturnDTO } from '../responseDTO/generalReturn.dto';
 import { ClientsEntity } from '../clients/clients.entity';
 import { ClientsService } from '../clients/clients.service';
-import { loadConfig } from 'tsconfig-paths';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService,
-              private clientService: ClientsService,) {
-  }
+  constructor(
+    private authService: AuthService,
+    private clientService: ClientsService,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post('register')

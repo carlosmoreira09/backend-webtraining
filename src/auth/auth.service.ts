@@ -47,12 +47,10 @@ export class AuthService {
 
   async login(data: UserDTO) {
     let checkUserExists: UsersEntity | ClientsEntity;
-    let admin: UsersEntity;
     if (data.isUser) {
       checkUserExists = (await this.clientService.validadeUserExist(
         data.username,
       )) as unknown as ClientsEntity;
-      admin = checkUserExists.admin;
     }
     if (!data.isUser) {
       checkUserExists = (await this.userService.validadeUserExist(
@@ -95,7 +93,7 @@ export class AuthService {
           username: checkUserExists.admin,
           name: checkUserExists.fullName,
           email: checkUserExists.email,
-          role: 'user',
+          role: checkUserExists.userType,
         });
       }
 
@@ -123,10 +121,11 @@ export class AuthService {
   }
 
   async validateContributor(reviewData: any) {
-    const review = await this.clientService.validadeUserExist(
-      reviewData.username,
-    );
-
+    let review: UsersEntity | ClientsEntity;
+    review = await this.clientService.validadeUserExist(reviewData.username);
+    if (!review) {
+      review = await this.userService.validadeUserExist(reviewData.username);
+    }
     const isMatch = await this.comparePassword(
       reviewData.password,
       review.password,

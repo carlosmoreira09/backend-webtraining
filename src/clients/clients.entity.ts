@@ -55,6 +55,9 @@ export class ClientsEntity {
   })
   old_sheets?: string;
 
+  @Column()
+  userType: string;
+
   @ManyToOne(() => UsersEntity, (users) => users.id_user)
   @JoinColumn()
   admin: UsersEntity;
