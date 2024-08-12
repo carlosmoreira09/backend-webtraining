@@ -19,6 +19,7 @@ export interface NewClientDTO {
   age: number;
   email: string;
   phone: string;
+  userType: string;
   password?: string;
   training_type?: string;
   id_sheets?: number;

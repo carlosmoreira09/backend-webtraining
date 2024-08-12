@@ -66,6 +66,7 @@ export class AuthService {
       checkUserExists.password,
     );
     if (!checkPassword) {
+
       throw new UnauthorizedException();
     }
     let accessToken: string;
@@ -90,7 +91,7 @@ export class AuthService {
       if (!(checkUserExists instanceof UsersEntity)) {
         accessToken = this.generateJWT({
           id: checkUserExists.id_client,
-          username: checkUserExists.admin,
+          username: checkUserExists.admin.username,
           name: checkUserExists.fullName,
           email: checkUserExists.email,
           role: checkUserExists.userType,
@@ -145,13 +146,14 @@ export class AuthService {
     let user: UsersEntity | ClientsEntity;
     if (decoded.role === 'user') {
       user = (await this.clientService.validadeUserExist(
-        decoded.username,
+        decoded.email,
       )) as ClientsEntity;
     } else {
       user = (await this.userService.validadeUserExist(
         decoded.username,
       )) as UsersEntity;
     }
+
     if (!decoded || !user) {
       throw new UnauthorizedException();
     }

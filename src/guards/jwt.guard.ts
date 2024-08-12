@@ -1,7 +1,6 @@
 import { ExecutionContext, Inject, Injectable } from '@nestjs/common';
 import { AuthGuard, IAuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
-import { UsersEntity } from '../users/users.entity';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') implements IAuthGuard {
@@ -18,9 +17,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') implements IAuthGuard {
       if (await this.helper.validate(jwtToken)) {
         user = await this.helper.decode(jwtToken);
       }
-    }
-    if (user?.role === 'user') {
-      return !!(user && user.name);
     }
     return !!(user && user.username);
   }

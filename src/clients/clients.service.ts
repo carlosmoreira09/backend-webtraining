@@ -17,8 +17,7 @@ export class ClientsService {
     private userService: UsersService,
     @Inject(forwardRef(() => SheetsService))
     private readonly sheetService: SheetsService,
-  ) {
-  }
+  ) {}
 
   async listAthletesByUser(id_user: number) {
     const listAthlete: ClientsEntity[] = await this.clientsRepository.find({
@@ -117,12 +116,13 @@ export class ClientsService {
       where: {
         email: user,
       },
+      relations: {
+        admin: true,
+      },
     });
   }
 
-  async create(
-    newClient: NewClientDTO,
-  ): Promise<GeneralReturnDTO> {
+  async create(newClient: NewClientDTO): Promise<GeneralReturnDTO> {
     newClient.admin = await this.userService.getUserInfo(newClient.id_user);
     if (!newClient.admin) {
       throw new HttpException('Usuário não existe', HttpStatus.FOUND);
