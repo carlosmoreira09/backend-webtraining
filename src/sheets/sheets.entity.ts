@@ -13,6 +13,8 @@ export class SheetsEntity {
   @Column()
   sheet_details: string;
   @Column()
+  training_quantity: number;
+  @Column()
   training_a: string;
   @Column()
   training_b: string;

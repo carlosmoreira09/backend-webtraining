@@ -5,6 +5,7 @@ export interface CreateSheetDTO {
   sheet_name: string;
   sheet_desc: string;
   sheet_details: string;
+  training_quantity: number;
   training_a: string;
   training_b?: string;
   training_c?: string;

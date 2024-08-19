@@ -116,6 +116,7 @@ export class SheetsService {
         sheet_name: true,
         sheet_desc: true,
         sheet_details: true,
+        training_quantity: true,
         training_a: true,
         training_b: true,
         training_c: true,
