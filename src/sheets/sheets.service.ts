@@ -19,8 +19,7 @@ export class SheetsService {
     private readonly userService: UsersService,
     @Inject(forwardRef(() => ClientsService))
     private readonly clientService: ClientsService,
-  ) {
-  }
+  ) {}
 
   async listSheets(id_user: number) {
     const listSheets: SheetsEntity[] = await this.sheetsRepository.find({
@@ -50,6 +49,12 @@ export class SheetsService {
       const trainingD: ExercisesEntity[] = await this.getExerciseInfo(
         sheet.training_d,
       );
+      const trainingE: ExercisesEntity[] = await this.getExerciseInfo(
+        sheet.training_e,
+      );
+      const trainingF: ExercisesEntity[] = await this.getExerciseInfo(
+        sheet.training_f,
+      );
       // eslint-disable-next-line prefer-const
       sheetWithExerciseInfo = {
         ...sheet,
@@ -57,6 +62,8 @@ export class SheetsService {
         training_b: trainingB,
         training_c: trainingC,
         training_d: trainingD,
+        training_e: trainingE,
+        training_f: trainingF,
       };
       listSheetWithExercises.push(sheetWithExerciseInfo);
     }
@@ -113,6 +120,8 @@ export class SheetsService {
         training_b: true,
         training_c: true,
         training_d: true,
+        training_e: true,
+        training_f: true,
         id_client: {
           id_client: true,
           fullName: true,
@@ -142,7 +151,12 @@ export class SheetsService {
     const trainingD: ExercisesEntity[] = await this.getExerciseInfo(
       sheet.training_d,
     );
-
+    const trainingE: ExercisesEntity[] = await this.getExerciseInfo(
+      sheet.training_e,
+    );
+    const trainingF: ExercisesEntity[] = await this.getExerciseInfo(
+      sheet.training_f,
+    );
     // eslint-disable-next-line prefer-const
     sheetToFront = {
       ...sheet,
@@ -150,8 +164,9 @@ export class SheetsService {
       training_b: trainingB,
       training_c: trainingC,
       training_d: trainingD,
+      training_e: trainingE,
+      training_f: trainingF,
     };
-
     return sheetToFront;
   }
 

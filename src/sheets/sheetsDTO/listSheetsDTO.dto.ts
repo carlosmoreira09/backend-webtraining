@@ -10,4 +10,6 @@ export class ListSheetsDTO {
   training_b: ExercisesEntity[];
   training_c: ExercisesEntity[];
   training_d: ExercisesEntity[];
+  training_e: ExercisesEntity[];
+  training_f: ExercisesEntity[];
 }

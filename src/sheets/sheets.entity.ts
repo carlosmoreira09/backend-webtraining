@@ -20,6 +20,10 @@ export class SheetsEntity {
   training_c: string;
   @Column()
   training_d: string;
+  @Column()
+  training_e: string;
+  @Column()
+  training_f: string;
   @DeleteDateColumn({
     name: 'deleted_at',
     type: 'timestamp',
